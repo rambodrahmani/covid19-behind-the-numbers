@@ -1,12 +1,13 @@
 %-------------------------------------------------------------------------------
 % File: main.tex
-%       COVID-19 Behind the Numbers project documentation.
+%	COVID-19 Behind the Numbers project documentation.
 %
-%       Compile using:
-%           $ pdflatex main.tex
+%	Compile using:
+%	    $ pdflatex main.tex
+%	    $ biber main
 %
 % Author: Rambod Rahmani <rambodrahmani@autistici.org>
-%         Created on 07/01/2021
+%	  Created on 07/01/2021
 %-------------------------------------------------------------------------------
 \documentclass[11pt,a4paper]{article}
 
@@ -19,20 +20,27 @@
 	filecolor=magenta,      
 	urlcolor=blue,
 }
-
 \usepackage{listings}
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage[justification=centering]{caption}
 \usepackage{wrapfig}
 \usepackage{amsmath}
-
+\usepackage{bold-extra}
 \definecolor{anti-flashwhite}{rgb}{0.95, 0.95, 0.96}
+
+% bibliography references
+\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
+\addbibresource{references.bib}
+\nocite{*}
 
 \begin{document}
 
+%-------------------------------------------------------------------------------
+% Title
+%-------------------------------------------------------------------------------
 \begin{center}
-	\Large\textbf{COVID-19: Behind the Numbers}\\
+	\huge{\bfseries{\scshape{COVID-19: Behind the Numbers}}}\\
 	\vspace{1.0cm}
 	\large{Data Mining and Machine Learning Project}\\
 	\vspace{0.2cm}
@@ -48,14 +56,67 @@
 	\normalsize{\today}
 \end{center}
 
+%-------------------------------------------------------------------------------
+% Table of contents
+%-------------------------------------------------------------------------------
 \tableofcontents
 
+%-------------------------------------------------------------------------------
+% Section: Introduction
+%-------------------------------------------------------------------------------
 \section{Introduction}
+\textbf{Decemebr 31, 2019}: \textit{Wuhan Municipal Health Commission, China,
+reported a cluster of cases of pneumonia in Wuhan, Hubei Province. A novel
+coronavirus was eventually identified.}\\
+\textbf{January 1, 2020}: \textit{World Health Organization (WHO) had set up the
+Incident Management Support Team across the three levels of the organization:
+headquarters, regional headquarters and country level, putting the organization
+on an emergency footing for dealing with the outbreak.}\\
+\textbf{January 5, 2020}: \textit{WHO published the first Disease Outbreak News
+on the new virus. This was a flagship technical publication to the scientific
+and public health community as well as global media.}\\
+\textbf{January 12, 2020}: \textit{China publicly shared the genetic sequence of
+COVID-19.}\\
+\\
+At the beginning of 2020, a new virus started spreading around China. As it
+turned out, this was the start of a world-changing event with overwhelming
+extent. After the first wave of the virus has passed over the entire world, the
+aim of this work is to address the following questions:
+\begin{itemize}
+	\item Which countries have been affected the most by COVID-19?
+	\item Which governments have taken the right actions to stop the
+		spreading of the virus?
+	\item Is it possible to build personalized predictive models for
+		symptomatic COVID-19 patients based on basic preconditions?
+\end{itemize}
+In order to fully answer these questions, first of all a reliable and big enough
+dataset was needed. Second, Data Mining and Machine Learning techniques were
+applied in order to obtain statistically significant results that could help
+address the proposed questions. In the following pages the described work and
+the resulting Python software is presented. The software architecture is
+presented in the very last section in order to focus primarily on the dataset
+retrieval and preprocessing, and on the analysis techniques and results.
 
+%-------------------------------------------------------------------------------
+% Section: Dataset
+%-------------------------------------------------------------------------------
 \section{Dataset}
 
+%-------------------------------------------------------------------------------
+% Section: Analysis
+%-------------------------------------------------------------------------------
+\section{Analysis}
+
+%-------------------------------------------------------------------------------
+% Section: Conclusion
+%-------------------------------------------------------------------------------
+\section{Conclusion}
+
+%-------------------------------------------------------------------------------
+% Section: Software Architecture
+%-------------------------------------------------------------------------------
 \section{Software Architecture}
 
-\section{Conclusion}
+\printbibliography
 
 \end{document}
