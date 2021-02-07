@@ -1,2 +1,2 @@
 # COVID-19: Behind the Numbers - Documentation
-COVID-19: Behind the Numbers
+Documentation for the project COVID-19: Behind the Numbers.
