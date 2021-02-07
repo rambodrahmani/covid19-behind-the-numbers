@@ -1,2 +1,2 @@
-# covid19-behind-the-numbers
+# COVID-19: Behind the Numbers
 COVID-19: Behind the Numbers
