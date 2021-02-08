@@ -1,46 +1,35 @@
 #!/usr/bin/env python
 
-##
+################################################################################
 # Main program.
+################################################################################
+
+import cmd
+import sys
+import util
+import total_cases
+
+__author__ = 'Rambod Rahmani'
+__copyright__ = 'Copyright (C) 2021 Rambod Rahmani'
+__license__ = 'GPLv3'
+
 ##
+# App main infinite loop.
+##
+class App(cmd.Cmd):
+    intro = 'Welcome to the COVID-19 Toolbox.\n\nType help or ? to list commands.\n'
+    prompt = '> '
+    
+    def do_total_cases(self, arg):
+        'Show COVID-19 total confirmed cases histogram.'
+        total_cases.plot()
+    
+    def do_exit(self, arg):
+        'Exit COVID-19 Toolbox.'
+        sys.exit()
 
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-
-__author__ = "Rambod Rahmani"
-__copyright__ = "Copyright (C) 2021 Rambod Rahmani"
-__license__ = "GPLv3"
-
-# load raw data
-historical_df = pd.read_csv("historical-covid-data.csv")
-
-# group raw data by country aggregating on total cases
-by_location = historical_df.groupby("location", as_index = False)["total_cases"].last()
-by_location.columns = ['location', 'total_cases']
-
-# remove world and continents data
-by_location = by_location[~by_location.location.str.contains("World")]
-by_location = by_location[~by_location.location.str.contains("Europe")]
-by_location = by_location[~by_location.location.str.contains("Europe Union")]
-by_location = by_location[~by_location.location.str.contains("America")]
-by_location = by_location[~by_location.location.str.contains("North America")]
-by_location = by_location[~by_location.location.str.contains("Asia")]
-by_location = by_location[~by_location.location.str.contains("Africa")]
-
-# sort by total cases count
-by_location = by_location.sort_values(by=['total_cases'], ascending = False)
-
-# extract top 15 countries
-by_location = by_location[0:15]
-
-# plot top 15 countries histogram
-by_location_hist = by_location.plot.bar(x='location', y='total_cases', rot=0)
-by_location_hist.set(xlabel="Locations")
-by_location_hist.set(ylabel="Total Cases")
-by_location_hist.set(title="Confirmed COVID-19 cases worldwide (Top 15)")
-by_location_hist.legend(["Total Cases"]);
-plt.xlabel('Country', fontsize=16)
-plt.ylabel('Total Confirmed Cases', fontsize=16)
-plt.ticklabel_format(style='plain', axis='y')
-plt.show()
+##
+# Entry point.
+##
+if __name__ == '__main__':
+    App().cmdloop()
