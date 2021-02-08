@@ -55,7 +55,7 @@ def per_milion_plot():
 
     # group raw data by country aggregating on total cases
     by_location = historical_df.groupby("location", as_index = False)["total_cases_per_million"].last()
-    by_location.columns = ['location', 'total_cases']
+    by_location.columns = ['location', 'total_cases_per_million']
 
     # remove world and continents data
     by_location = by_location[~by_location.location.str.contains("World")]
@@ -70,13 +70,13 @@ def per_milion_plot():
     by_location = by_location[~by_location.location.str.contains("Europe Union")]
 
     # sort by total cases count
-    by_location = by_location.sort_values(by=['total_cases'], ascending = False)
+    by_location = by_location.sort_values(by=['total_cases_per_million'], ascending = False)
 
     # extract top 15 countries
     by_location = by_location[0:15]
 
     # plot top 15 countries histogram
-    by_location_hist = by_location.plot.bar(x='location', y='total_cases', rot=0)
+    by_location_hist = by_location.plot.bar(x='location', y='total_cases_per_million', rot=0)
     by_location_hist.set(xlabel="Locations")
     by_location_hist.set(ylabel="Total Cases")
     by_location_hist.set(title="Confirmed COVID-19 Cases Per One Million Population (Top 15 Worldwide)")

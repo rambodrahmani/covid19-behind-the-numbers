@@ -149,7 +149,16 @@ that zero cases with no testing at all does not really mean that a given country
 is not affected by the pandemic. We therefore need a quantity unrelated to the
 rate of testing.\\
 This quantity is the number of deaths: this value is unbiased by the testing
-rate. We will use the normalized number of deaths for comparing countries.
+rate. We will use the normalized number of daily deaths for comparing
+countries.\\
+\\
+While the previous results were obtained using the original COVID-19 historical
+dataset\footnote{Coronavirus Pandemic (COVID-19) – the data, provided by Our
+World in Data}, \textbf{this time some preprocessing is needed}. As a matter
+fact, the values for some of the dates in the original dataset are missing.
+
+
+
 To summarize, by means of a machine learning algorithm applied to the COVID-19
 data we organized countries into groups with similar epidemiological behavior.
 Surprisingly, those groups form local clusters on the world map as well. This

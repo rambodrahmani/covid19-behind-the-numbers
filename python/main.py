@@ -8,6 +8,7 @@ import cmd
 import sys
 import util
 import total_cases
+import total_deaths
 
 __author__ = 'Rambod Rahmani'
 __copyright__ = 'Copyright (C) 2021 Rambod Rahmani'
@@ -27,7 +28,11 @@ class App(cmd.Cmd):
     def do_total_cases_per_million(self, arg):
         'Show TOP 15 countries COVID-19 total confirmed cases per one million population histogram.'
         total_cases.per_milion_plot()
-    
+
+    def do_total_deaths(self, arg):
+        'Show TOP 15 countries COVID-19 total confirmed cases per one million population histogram.'
+        total_deaths.plot()
+
     def do_exit(self, arg):
         'Exit COVID-19 Toolbox.'
         sys.exit()

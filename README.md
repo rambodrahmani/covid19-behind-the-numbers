@@ -21,7 +21,7 @@ $ sudo apt-get install python-tk
 ```
 Install Python required packages:
 ```bash
-$ pip install pandas matplotlib
+$ pip install -U pandas matplotlib scikit-learn
 ```
 Simply run
 ```bash
