@@ -117,9 +117,39 @@ the official numbers and charts of confirmed COVID-19 active cases and deaths.
 We are so used to watching them and sometimes we think we might even understand
 how the COVID-19 pandemic is evolving as days goes by. For example, it is very
 common to consider the following:
-
-Is this really the right choice? Does this ranking tells us anything meaningful?
-
+\begin{figure}[H]
+    \begin{center}
+        \hspace*{-1.8cm}
+        \includegraphics[scale=0.45]{img/top-15.pdf}
+    \end{center}
+    \vspace*{-0.4cm}
+    \caption{Confirmed COVID-19 Cases Worldwide}
+\end{figure}
+\noindent Is this really the right choice? Does this ranking tells us anything
+meaningful about the current undergoing pandemic situation? From what we can
+observe in Figure 1, clearly United States has higher confirmed COVID-19 cases
+than countries such as Spain or Italy. Taking into account that the US is a much
+bigger country, we can agree that this results do not imply that the US is more
+affected than Spain, Italy or Germany. We can therefore think of a fairer
+comparison independent of the country size: the number of infections needs to be
+normalized to the population of each country:
+\begin{figure}[H]
+    \begin{center}
+        \hspace*{-1.7cm}
+        \includegraphics[scale=0.44]{img/top-15-per-million.pdf}
+    \end{center}
+    \vspace*{-0.4cm}
+    \caption{Confirmed COVID-19 Cases Per One Million Population Worldwide}
+\end{figure}
+\noindent This provides a more coherent view of the countries most affected by
+COVID-19, however it is not yet good enough: countries have different testing
+policies and a more intensive COVID-19 testing rate gives more confirmed cases
+while no testing at all would imply zero cases. We can all agree upon the fact
+that zero cases with no testing at all does not really mean that a given country
+is not affected by the pandemic. We therefore need a quantity unrelated to the
+rate of testing.\\
+This quantity is the number of deaths: this value is unbiased by the testing
+rate. We will use the normalized number of deaths for comparing countries.
 To summarize, by means of a machine learning algorithm applied to the COVID-19
 data we organized countries into groups with similar epidemiological behavior.
 Surprisingly, those groups form local clusters on the world map as well. This

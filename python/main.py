@@ -21,8 +21,12 @@ class App(cmd.Cmd):
     prompt = '> '
     
     def do_total_cases(self, arg):
-        'Show COVID-19 total confirmed cases histogram.'
+        'Show TOP 15 countries COVID-19 total confirmed cases histogram.'
         total_cases.plot()
+        
+    def do_total_cases_per_million(self, arg):
+        'Show TOP 15 countries COVID-19 total confirmed cases per one million population histogram.'
+        total_cases.per_milion_plot()
     
     def do_exit(self, arg):
         'Exit COVID-19 Toolbox.'
