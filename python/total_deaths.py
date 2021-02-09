@@ -5,8 +5,6 @@
 # time series chart.
 ################################################################################
 
-from tslearn.clustering import TimeSeriesKMeans
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -145,9 +143,6 @@ def plot_all_countries():
 
     # resample data to obtain a better plot
     data_resampled = preprocessed_historical_df.resample('W').sum()
-
-    model = TimeSeriesKMeans(n_clusters=3, metric="dtw", max_iter=10, random_state=seed)
-    model.fit(data_resampled)
 
     # plot time series
     time_series_plot = data_resampled.loc['2020-02-15':].plot(legend = False, color = 'Black', linewidth = 0.2)
