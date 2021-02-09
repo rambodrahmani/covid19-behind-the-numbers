@@ -36,7 +36,7 @@ class App(cmd.Cmd):
         
     def do_total_deaths_all_countries(self, arg):
         'Plot all countries COVID-19 total deaths per one million population time series.'
-        total_deaths.plot()
+        total_deaths.plot_all_countries()
 
     def do_exit(self, arg):
         'Exit COVID-19 Toolbox.'

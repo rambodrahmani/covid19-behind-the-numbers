@@ -46,7 +46,7 @@ def plot():
     plt.ylabel('Total Confirmed Cases', fontsize=16)
     plt.ticklabel_format(style='plain', axis='y')
     plt.show()
-    
+
 def per_milion_plot():
     # load raw data
     historical_df = pd.read_csv("historical-covid-data.csv")

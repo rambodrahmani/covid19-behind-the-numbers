@@ -38,7 +38,7 @@
 \definecolor{ts_spain}{rgb}{0.88, 0.46, 0.75}
 \definecolor{ts_germany}{rgb}{0.49, 0.49, 0.49}
 \definecolor{ts_italy}{rgb}{0.73, 0.73, 0.12}
-\definecolor{ts_brazil}{rgb}{0.8, 0.74, 0.80}
+\definecolor{ts_brazil}{rgb}{0.0, 0.100, 0.84}
 
 % bibliography references
 \usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
@@ -210,21 +210,23 @@ one can immediately point out that
     beginning; as a result, the number of deaths went back to almost zero; yet
     they are suffering from the second wave;
     \item countries such as {\color{ts_unitedstates}United States} and
-    {\color{ts_brazil}Brazil} have a daily death toll with and almost constant
+    {\color{cyan}Brazil} have a daily death toll with and almost constant
     trend.
 \end{itemize}
-
-
-\definecolor{ts_belgium}{rgb}{0.11, 0.46, 0.70}
-\definecolor{ts_armenia}{rgb}{0.99, 0.49, 0.5}
-\definecolor{ts_austria}{rgb}{0.16, 0.62, 0.16}
-\definecolor{ts_bulgaria}{rgb}{0.83, 0.14, 0.15}
-\definecolor{ts_france}{rgb}{0.57, 0.40, 0.73}
-\definecolor{ts_unitedstates}{rgb}{0.54, 0.33, 0.29}
-\definecolor{ts_spain}{rgb}{0.88, 0.46, 0.75}
-\definecolor{ts_germany}{rgb}{0.49, 0.49, 0.49}
-\definecolor{ts_italy}{rgb}{0.73, 0.73, 0.12}
-\definecolor{ts_brazil}{rgb}{0.8, 0.74, 0.80}
+If we extend the same reasoning to all the countries we have data for:
+\begin{figure}[H]
+    \begin{center}
+        \hspace*{-1.7cm}
+        \includegraphics[scale=0.46]{img/weekly-deaths-worldwide.pdf}
+    \end{center}
+    \caption{COVID-19 Weekly Deaths Per One Million Population Worldwide}
+\end{figure}
+\noindent Figure 4 shows the weekly deaths per one million population for 190
+countries, from Afghanistan to Zimbabwe. It is humanly impossible to extract
+any useful information from such a plot. In this mess, how many different
+characteristic curves can we find? To clean the mess, find patterns and extract
+the required knowledge, a clustering algorithm was used. This unsupervised
+learning technique groups similar data curves together.
 
 
 To summarize, by means of a machine learning algorithm applied to the COVID-19
