@@ -27,7 +27,18 @@
 \usepackage{wrapfig}
 \usepackage{amsmath}
 \usepackage{bold-extra}
-\definecolor{anti-flashwhite}{rgb}{0.95, 0.95, 0.96}
+
+% time series countries colors
+\definecolor{ts_belgium}{rgb}{0.11, 0.46, 0.70}
+\definecolor{ts_armenia}{rgb}{0.99, 0.49, 0.5}
+\definecolor{ts_austria}{rgb}{0.16, 0.62, 0.16}
+\definecolor{ts_bulgaria}{rgb}{0.83, 0.14, 0.15}
+\definecolor{ts_france}{rgb}{0.57, 0.40, 0.73}
+\definecolor{ts_unitedstates}{rgb}{0.54, 0.33, 0.29}
+\definecolor{ts_spain}{rgb}{0.88, 0.46, 0.75}
+\definecolor{ts_germany}{rgb}{0.49, 0.49, 0.49}
+\definecolor{ts_italy}{rgb}{0.73, 0.73, 0.12}
+\definecolor{ts_brazil}{rgb}{0.8, 0.74, 0.80}
 
 % bibliography references
 \usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
@@ -120,10 +131,10 @@ common to consider the following:
 \begin{figure}[H]
     \begin{center}
         \hspace*{-1.8cm}
-        \includegraphics[scale=0.45]{img/top-15.pdf}
+        \includegraphics[scale=0.44]{img/total-cases.pdf}
     \end{center}
     \vspace*{-0.4cm}
-    \caption{Confirmed COVID-19 Cases Worldwide}
+    \caption{Top 15 Countries Confirmed COVID-19 Cases}
 \end{figure}
 \noindent Is this really the right choice? Does this ranking tells us anything
 meaningful about the current undergoing pandemic situation? From what we can
@@ -136,10 +147,10 @@ normalized to the population of each country:
 \begin{figure}[H]
     \begin{center}
         \hspace*{-1.7cm}
-        \includegraphics[scale=0.44]{img/top-15-per-million.pdf}
+        \includegraphics[scale=0.44]{img/total-cases-per-million.pdf}
     \end{center}
     \vspace*{-0.4cm}
-    \caption{Confirmed COVID-19 Cases Per One Million Population Worldwide}
+    \caption{Top 15 Countries Confirmed COVID-19 Cases Per One Million Population}
 \end{figure}
 \noindent This provides a more coherent view of the countries most affected by
 COVID-19, however it is not yet good enough: countries have different testing
@@ -153,10 +164,67 @@ rate. We will use the normalized number of daily deaths for comparing
 countries.\\
 \\
 While the previous results were obtained using the original COVID-19 historical
-dataset\footnote{Coronavirus Pandemic (COVID-19) – the data, provided by Our
-World in Data}, \textbf{this time some preprocessing is needed}. As a matter
-fact, the values for some of the dates in the original dataset are missing.
+dataset\cite{ourworldindata}, \textbf{this time some preprocessing and
+resampling is needed}:
+\begin{itemize}
+    \item the daily values for some of the dates in the original dataset are missing:
+    \begin{itemize}
+        \item countries with too many missing values (more than $150$ days) were
+        removed since no interpolation technique can really be effective in such
+        cases;
+        \item were few missing values were present, these were replaced using
+        the mean;
+    \end{itemize}
+    \item plotting the data with daily granularity results in a time series plot
+    which is not smooth and hard to read; the data was therefore resampled with
+    weekly granularity;
+\end{itemize}
+To impute the missing values, i.e., to infer them from the known part of the
+data, an univariate imputation algorithm was used: imputes values in the
+i-th feature dimension using only non-missing values in that feature dimension.
+To this end, the \texttt{SimpleImputer} class from the \texttt{scikit-learn}
+Python package was used. Missing values were imputed with the mean of each
+column.\\
+\\
+This is the resulting time series plot for some of the countries:
+\begin{figure}[H]
+    \begin{center}
+        \hspace*{-1.7cm}
+        \includegraphics[scale=0.46]{img/weekly-deaths.pdf}
+    \end{center}
+    \caption{COVID-19 Weekly Deaths Per One Million Population}
+\end{figure}
+\noindent Daily deaths count appears to be a fair measure to compare how hard
+different countries have been hit by the virus. I addition, observing the plot
+one can immediately point out that
+\begin{itemize}
+    \item some countries suffered more the first wave, some others the second
+    and some both;
+    \item countries such as {\color{ts_italy}Italy} and
+    {\color{ts_belgium}Belgium} were devastated by the first wave and reacted
+    by completely shutting down social life; yet they are not doing better with
+    the second wave;
+    \item countries such as {\color{ts_austria}Austria} and
+    {\color{ts_germany}Germany} have not been hit hard by the first COVID-19
+    wave; these states reacted fast and slowed down social life right at the
+    beginning; as a result, the number of deaths went back to almost zero; yet
+    they are suffering from the second wave;
+    \item countries such as {\color{ts_unitedstates}United States} and
+    {\color{ts_brazil}Brazil} have a daily death toll with and almost constant
+    trend.
+\end{itemize}
 
+
+\definecolor{ts_belgium}{rgb}{0.11, 0.46, 0.70}
+\definecolor{ts_armenia}{rgb}{0.99, 0.49, 0.5}
+\definecolor{ts_austria}{rgb}{0.16, 0.62, 0.16}
+\definecolor{ts_bulgaria}{rgb}{0.83, 0.14, 0.15}
+\definecolor{ts_france}{rgb}{0.57, 0.40, 0.73}
+\definecolor{ts_unitedstates}{rgb}{0.54, 0.33, 0.29}
+\definecolor{ts_spain}{rgb}{0.88, 0.46, 0.75}
+\definecolor{ts_germany}{rgb}{0.49, 0.49, 0.49}
+\definecolor{ts_italy}{rgb}{0.73, 0.73, 0.12}
+\definecolor{ts_brazil}{rgb}{0.8, 0.74, 0.80}
 
 
 To summarize, by means of a machine learning algorithm applied to the COVID-19
@@ -166,7 +234,6 @@ unexpected insight helps us to answer the question proposed in this section.
 
 \subsection{Which governments have taken the right actions?}
 \subsection{Personalized predictive models for symptomatic COVID-19 patients}
-		
 %-------------------------------------------------------------------------------
 % Section: Conclusion
 %-------------------------------------------------------------------------------

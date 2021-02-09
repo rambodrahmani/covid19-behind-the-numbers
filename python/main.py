@@ -22,15 +22,20 @@ class App(cmd.Cmd):
     prompt = '> '
     
     def do_total_cases(self, arg):
-        'Show TOP 15 countries COVID-19 total confirmed cases histogram.'
+        'Plot TOP 15 countries COVID-19 total confirmed cases histogram.'
+        'Plot TOP 15 countries COVID-19 total confirmed cases histogram.'
         total_cases.plot()
         
     def do_total_cases_per_million(self, arg):
-        'Show TOP 15 countries COVID-19 total confirmed cases per one million population histogram.'
+        'Plot TOP 15 countries COVID-19 total confirmed cases per one million population histogram.'
         total_cases.per_milion_plot()
 
     def do_total_deaths(self, arg):
-        'Show TOP 15 countries COVID-19 total confirmed cases per one million population histogram.'
+        'Plot random countries COVID-19 total deaths per one million population time series.'
+        total_deaths.plot()
+        
+    def do_total_deaths_all_countries(self, arg):
+        'Plot all countries COVID-19 total deaths per one million population time series.'
         total_deaths.plot()
 
     def do_exit(self, arg):

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 ################################################################################
-# Show TOP 15 countries COVID-19 daily deaths (per one million population) time
-# series chart.
+# Randomly plots countries COVID-19 daily deaths (per one million population)
+# time series chart.
 ################################################################################
 
 import numpy as np
@@ -37,7 +37,7 @@ def plot():
     # sort by total deaths count
     by_location = by_location.sort_values(by=['total_deaths_per_million'], ascending = False)
 
-    # extract top 50 countries
+    # extract top 50 countries: these will be filtered again later
     by_location = by_location[0:50]
     top_countries = by_location['location'].values
 
@@ -46,17 +46,17 @@ def plot():
 
     # find countries with too many NA values
     na_count = historical_df.groupby("location")["new_deaths_per_million"].apply(lambda x: (x<= 0).sum()).reset_index(name='count')
-    countries_missing_data = na_count[na_count['count'] > 170].location.values
+    countries_missing_data = na_count[na_count['count'] > 150].location.values
 
     # preprocessing: set values <= 0 to NA
     preprocessed_historical_df = historical_df
     preprocessed_historical_df[preprocessed_historical_df <= 0] = np.nan
-    
+
     # replace missing values with the mean
     imp_mean = SimpleImputer(missing_values = np.nan, strategy = 'mean')
     preprocessed_historical_df[['new_deaths_per_million']] = pd.DataFrame(imp_mean.fit_transform(preprocessed_historical_df[['new_deaths_per_million']]))
     preprocessed_historical_df.columns = historical_df.columns
-    
+
     # select top 15 countries country name and daily death count
     preprocessed_historical_df = preprocessed_historical_df[preprocessed_historical_df.location.isin(top_countries)]
     preprocessed_historical_df = preprocessed_historical_df[~preprocessed_historical_df.location.isin(countries_missing_data)]
@@ -65,10 +65,22 @@ def plot():
     # convert dataframe to multiple time series structure
     preprocessed_historical_df = preprocessed_historical_df.pivot(index='date', columns='location', values='new_deaths_per_million')
 
-    # replace NaNs generated in the conversion with zeros
+    # replace NaNs generated in the conversion to timeseries with zeros
     preprocessed_historical_df = preprocessed_historical_df.fillna(0)
-    
+
+    # convert dataframe index to time index
+    preprocessed_historical_df.index = pd.to_datetime(preprocessed_historical_df.index)
+
+    # resample data to obtain a better plot
+    data_resampled = preprocessed_historical_df.resample('7D').mean()
+
+    # select top 5 countries
+    data_resampled = data_resampled[['Belgium', 'Armenia', 'Austria', 'Bulgaria', 'France', 'United States', 'Spain', 'Germany', 'Italy', 'Brazil']];
+
     # plot time series
-    preprocessed_historical_df.loc['2020-03-01':].plot()
-    preprocessed_historical_df[['Italy', 'Germany', 'Spain', 'Brazil', 'United States']].loc['2020-03-01':].plot()
+    time_series_plot = data_resampled.loc['2020-02-15':].plot()
+    time_series_plot.set(title="COVID-19 Weekly Deaths Per One Million Population")
+    time_series_plot.legend(title="");
+    plt.xlabel('', fontsize=16)
+    plt.ylabel('Weekly Deaths', fontsize=16)
     plt.show()
