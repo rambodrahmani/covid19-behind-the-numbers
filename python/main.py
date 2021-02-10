@@ -6,7 +6,6 @@
 
 import cmd
 import sys
-import util
 import total_cases
 import total_deaths
 
