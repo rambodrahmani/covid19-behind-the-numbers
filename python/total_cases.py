@@ -38,7 +38,7 @@ def plot():
     # show the plot
     plt.show()
 
-def per_milion_plot():
+def perMilionPlot():
     # load raw data
     historical_df = util.loadHistoricalData()
 

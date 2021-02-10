@@ -14,7 +14,7 @@ __author__ = "Rambod Rahmani"
 __copyright__ = "Copyright (C) 2021 Rambod Rahmani"
 __license__ = "GPLv3"
 
-def plot():
+def perMilionPlot():
     # load raw data
     historical_df = pd.read_csv("historical-covid-data.csv")
 
@@ -85,7 +85,7 @@ def plot():
     plt.ylabel('Weekly Deaths', fontsize = 16)
     plt.show()
 
-def plot_all_countries():
+def allCountriesPerMilionPlot():
     # load raw data
     historical_df = pd.read_csv("historical-covid-data.csv")
 
