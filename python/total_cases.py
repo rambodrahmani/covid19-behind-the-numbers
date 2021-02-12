@@ -14,7 +14,7 @@ __copyright__ = "Copyright (C) 2021 Rambod Rahmani"
 __license__ = "GPLv3"
 
 def plot():
-    # load raw data
+    # load historical data
     historicalDF = util.loadHistoricalData()
 
     if not historicalDF is None:
@@ -40,7 +40,7 @@ def plot():
         plt.show()
 
 def perMilionPlot():
-    # load raw data
+    # load historical data
     historicalDF = util.loadHistoricalData()
 
     if not historicalDF is None:

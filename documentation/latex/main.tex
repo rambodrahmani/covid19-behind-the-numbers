@@ -51,7 +51,7 @@
 % Title
 %-------------------------------------------------------------------------------
 \begin{center}
-	\huge{\bfseries{\scshape{COVID-19: Behind the Numbers}}}\\
+	\huge{\bfseries{\scshape{COVID-19: Behind The Numbers}}}\\
 	\vspace{1.0cm}
 	\large{Data Mining and Machine Learning Project}\\
 	\vspace{0.2cm}
@@ -78,15 +78,15 @@
 %-------------------------------------------------------------------------------
 \section{Introduction}
 \textbf{Decemebr 31, 2019}: \textit{Wuhan Municipal Health Commission, China,
-reported a cluster of cases of pneumonia in Wuhan, Hubei Province. A novel
-coronavirus was eventually identified.}\\
+reported a cluster of cases of pneumonia in Wuhan, Hubei Province.}\\
+\\
 \textbf{January 1, 2020}: \textit{World Health Organization (WHO) had set up the
-Incident Management Support Team across the three levels of the organization:
-headquarters, regional headquarters and country level, putting the organization
-on an emergency footing for dealing with the outbreak.}\\
+Incident Management Support Team across the three levels of the organization.}\\
+\\
 \textbf{January 5, 2020}: \textit{WHO published the first Disease Outbreak News
 on the new virus. This was a flagship technical publication to the scientific
-and public health community as well as global media.}\\
+community.}\\
+\\
 \textbf{January 12, 2020}: \textit{China publicly shared the genetic sequence of
 COVID-19.}\\
 \\
@@ -149,12 +149,117 @@ collaborative effort between researchers at the University of Oxford, focused on
 "research and data to make progress against the world's largest problems" -
 provides the JHU CSSE data already
 merged\footnote{\url{https://ourworldindata.org/coronavirus-data}} and updated
-to the latest second as a single \texttt{.csv} file. The Python program
-developed as part of this work, provides the \texttt{update\_historical\_data}
-command which can be used to fetch the latest available data automatically.
+to the latest second as a single \texttt{.csv} file. The choice was made to use
+this \texttt{.csv} file as dataset. The Python program developed as part of this
+work, provides the \texttt{update\_historical\_data} command which can be used
+to fetch the latest available data automatically.\\
+The dataset file is \texttt{owid-covid-data.csv} with a size of $16.5$ MiB.\\
+\\
+This dataset was used for the first part of the work: finding the characteristic
+curves of each country and grouping together countries with comparable behavior
+by means of clustering algorithms. This will provide us a truthful overview of
+the countries most affected by COVID-19 and the ones that put in place
+appropriate policies to handle the pandemic widespread.
 \subsubsection{Preprocessing}
+This dataset contains worldwide per-country daily data for COVID-19 for a total
+of 59 columns and 68331 entries. Among others, we are interested mainly in
+\begin{itemize}
+    \item total confirmed cases;
+    \item new confirmed cases;
+    \item total deaths;
+    \item new deaths;
+    \item total confirmed cases per one million population;
+    \item new confirmed cases per one million population;
+    \item total deaths per one million population;
+    \item new deaths per one million population;
+\end{itemize}
+The main considerations to be made about this dataset as far as it concerns data
+preprocessing are:
+\begin{itemize}
+    \item contains redundant data, e.g. values aggregated by continent (Asia,
+    Africa, Europe, America, North America etc\dots);
+    \item some of the daily data values are missing (specially for the very
+    initial days of the pandemic, i.e. from 2020-01-01 to 2020-03-01)
+\end{itemize}
+as a result, the following preprocessing procedures were applied
+\begin{itemize}
+    \item data aggregated by continent was removed;
+    \item missing daily data values for countries were replaced\footnote{The
+    \texttt{scikit-learn SimpleImputer} was used to this end} with the constant
+    value $0$; this seems the most reasonable choice since these missing values
+    refer to the very beginning of the pandemic; using either the mean or the
+    mode produces a distorted dataset.
+    \item negative values were replaced with the constant value $0$ too; another
+    strategy was tried first: using the moving average with window size $k$ to
+    approximate the negative value as the average of the $k$ previous and
+    successive values; however the problem was determining $k$.
+\end{itemize}
+Taking into account also the fact that the daily data will mostly be used
+resampled with weekly frequency, there is was not need to further preprocess the
+dataset.
 \subsection{COVID-19 Medical Preconditions Data}
+The second part of this work focused on frequent pattern analysis in order to be
+able to find interesting pattern as far as it concerns COVID-19 patients who
+had prior medical preconditions. Finding such patterns is a crucial task that
+might allow to best allocate very limited medical resources. The dataset
+required for such type of analysis was not easy to find: usually COVID-19
+datasets only contain daily values (numbers) of confirmed cases and deaths. They
+rarely come equipped with the medical preconditions of the patients. Anyway,
+the Federal government of Mexico\cite{mexico} provided such a dataset: it is
+splitted in three main files:
+\begin{itemize}
+    \item \texttt{210206COVID19MEXICO.csv}: the main data file containing, among
+    others,
+    \begin{itemize}
+        \item patients sex, age, admission date, COVID-19 test result;
+        \item if the patient required hospitalization, intubation or Intensive
+        care unit (ICU);
+        \item if the patient was affected by Pneumonia, diabetes, Chronic
+        obstructive pulmonary disease (COPD), asma, Asthma, Hypertension,
+        Cardiovascular disease (CVD), etc\dots;
+        \item death date (only for those patients who actually died).
+    \end{itemize}
+    \item \texttt{201128\_Catalogos.xlsx}, \texttt{201128\_Descriptores.xlsx}:
+    contain additional explanation regarding each feature present in the main
+    dataset file.
+\end{itemize}
+The rapid global spread of the virus SARS-CoV-2 has provoked a spike in
+demand for hospital care. Hospital systems across the world have been
+over-extended, including the one case we are most familiar with, Northern Italy.
+As a result, decisions on how to best allocate very limited medical resources
+have come to the forefront:
+\begin{itemize}
+    \item who to test;
+    \item who to admit into hospitals;
+    \item who to treat in an Intensive Care Unit (ICU);
+    \item who to support with a ventilator
+\end{itemize}.
+This dataset is perfect for the objective of the analysis we are interested in:
+develop personalized models that predict the following events:
+\begin{enumerate}
+    \item hospitalization;
+    \item need for ICU;
+    \item need for a ventilator;
+    \item mortality;
+\end{enumerate}
 \subsubsection{Preprocessing}
+The preprocessing required by this second dataset is completely different from
+the one required  by the first one. This is because the type of data is
+completely different. While the first dataset is primarily a sequence of
+numerical records, here we deal with categorical attributes. The main
+considerations to be made include
+\begin{itemize}
+    \item the dataset was split into $3$ files: one with the main content, the
+    remaining two files contain headers details;
+    \item Spanish is the de facto national language spoken by the vast majority
+    of Mexicans, all files are in Spanish;
+    \item the dataset has a size of about $754$ MiB, with a total of 40 columns
+    and 4.880.032 entries.
+\end{itemize}
+The main preprocessing procedures applied include:
+\begin{itemize}
+    \item 
+\end{itemize}
 
 %-------------------------------------------------------------------------------
 % Section: Analysis

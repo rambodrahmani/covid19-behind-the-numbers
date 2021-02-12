@@ -25,6 +25,10 @@ class App(cmd.Cmd):
         'Update COVID-19 historical data to the latest available version.'
         util.updateHistoricalData()
 
+    def do_print_historical_df_info(self, arg):
+        'Prints COVID-19 historical dataset info.'
+        util.printHistoricalDFInfo()
+
     def do_total_cases(self, arg):
         'Plot COVID-19 total confirmed cases histogram of the TOP 15 countries.'
         total_cases.plot()
