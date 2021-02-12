@@ -35,6 +35,10 @@ class App(cmd.Cmd):
     def do_total_deaths_all_countries(self, arg):
         'Plot COVID-19 daily deaths per one million population time series of all countries.'
         total_deaths.allCountriesPerMilionPlot()
+        
+    def do_total_deaths_clustering(self, arg):
+        'Plot COVID-19 daily deaths per one million population time series clusters.'
+        total_deaths.clusteringPlot()
 
     def do_exit(self, arg):
         'Exit COVID-19 Toolbox.'
