@@ -6,6 +6,7 @@
 
 import cmd
 import sys
+import util
 import total_cases
 import total_deaths
 
@@ -19,7 +20,11 @@ __license__ = 'GPLv3'
 class App(cmd.Cmd):
     intro = 'Welcome to the COVID-19 Toolbox.\n\nType help or ? to list commands.\n'
     prompt = '> '
-    
+
+    def do_update_historical_data(self, arg):
+        'Update COVID-19 historical data to the latest available version.'
+        util.updateHistoricalData()
+
     def do_total_cases(self, arg):
         'Plot COVID-19 total confirmed cases histogram of the TOP 15 countries.'
         total_cases.plot()

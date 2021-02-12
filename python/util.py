@@ -4,7 +4,9 @@
 # Utilities functions.
 ################################################################################
 
+import csv
 import os.path
+import requests
 import numpy as np
 import pandas as pd
 from sklearn.impute import SimpleImputer
@@ -13,11 +15,11 @@ __author__ = "Rambod Rahmani"
 __copyright__ = "Copyright (C) 2021 Rambod Rahmani"
 __license__ = "GPLv3"
 
-HISTORICAL_DATASET_PATH = "historical-covid-data.csv"
-PREPROCESSED_HISTORICAL_DATASET_PATH = "resampled-historical-covid-data.csv"
+HISTORICAL_DATASET_PATH = "owid-covid-data.csv"
+PREPROCESSED_HISTORICAL_DATASET_PATH = "resampled-owid-covid-data.csv"
 
 ##
-# Loads and preprocesses the historical dataframe.
+# Loads and preprocesses the historical data .CSV.
 ##
 def loadHistoricalData():
     # check if the csv file exists
@@ -43,10 +45,7 @@ def loadHistoricalData():
 
             # only select columns of interest for the data mining process
             historicalDF = historicalDF[['iso_code', 'continent', 'location', 'date', 'total_cases', 'new_cases', 'total_deaths', 'new_deaths', 'total_cases_per_million', 'new_cases_per_million', 'total_deaths_per_million', 'new_deaths_per_million']]
-
-            # preprocessing: replace negative values with NaN
-            historicalDF[historicalDF <= 0] = np.nan
-
+            
             # extract location column values
             byLocation = historicalDF.groupby("location", as_index = False)["total_cases"].last()
             byLocation.columns = ['location', 'total_cases']
@@ -55,18 +54,43 @@ def loadHistoricalData():
             # empty dataframe with the same columns
             imputedDF = pd.DataFrame(columns = historicalDF.columns)
 
-            # preprocessing: replace missing values with the mean by location
+            # preprocessing: replace negative values with NaN
+            # replace missing values with constant value
             for location in locations:
                 meanImputer = SimpleImputer(missing_values = np.nan, strategy = 'constant', fill_value = 0)
                 tempDF = historicalDF[historicalDF['location'] == location]
-                totalCases = pd.DataFrame(meanImputer.fit_transform(tempDF[['total_cases']]))
-                newCases = pd.DataFrame(meanImputer.fit_transform(tempDF[['new_cases']]))
-                totalDeaths = pd.DataFrame(meanImputer.fit_transform(tempDF[['total_deaths']]))
-                newDeaths = pd.DataFrame(meanImputer.fit_transform(tempDF[['new_deaths']]))
-                totalCasesPerMillion = pd.DataFrame(meanImputer.fit_transform(tempDF[['total_cases_per_million']]))
-                newCasesPerMillion = pd.DataFrame(meanImputer.fit_transform(tempDF[['new_cases_per_million']]))
-                totalDeathsPerMillion = pd.DataFrame(meanImputer.fit_transform(tempDF[['total_deaths_per_million']]))
-                newDeathsPerMillion = pd.DataFrame(meanImputer.fit_transform(tempDF[['new_deaths_per_million']]))
+
+                totalCases = tempDF[['total_cases']].copy()
+                totalCases[totalCases <= 0] = np.nan
+                totalCases = pd.DataFrame(meanImputer.fit_transform(totalCases))
+                
+                newCases = tempDF[['new_cases']].copy()
+                newCases[newCases <= 0] = np.nan
+                newCases = pd.DataFrame(meanImputer.fit_transform(newCases))
+                
+                totalDeaths = tempDF[['total_deaths']].copy()
+                totalDeaths[totalDeaths <= 0] = np.nan
+                totalDeaths = pd.DataFrame(meanImputer.fit_transform(totalDeaths))
+                
+                newDeaths = tempDF[['new_deaths']].copy()
+                newDeaths[newDeaths <= 0] = np.nan
+                newDeaths = pd.DataFrame(meanImputer.fit_transform(newDeaths))
+                
+                totalCasesPerMillion = tempDF[['total_cases_per_million']].copy()
+                totalCasesPerMillion[totalCasesPerMillion <= 0] = np.nan
+                totalCasesPerMillion = pd.DataFrame(meanImputer.fit_transform(totalCasesPerMillion))
+                
+                newCasesPerMillion = tempDF[['new_cases_per_million']].copy()
+                newCasesPerMillion[newCasesPerMillion <= 0] = np.nan
+                newCasesPerMillion = pd.DataFrame(meanImputer.fit_transform(newCasesPerMillion))
+                
+                totalDeathsPerMillion = tempDF[['total_deaths_per_million']].copy()
+                totalDeathsPerMillion[totalDeathsPerMillion <= 0] = np.nan
+                totalDeathsPerMillion = pd.DataFrame(meanImputer.fit_transform(totalDeathsPerMillion))
+                
+                newDeathsPerMillion = tempDF[['new_deaths_per_million']].copy()
+                newDeathsPerMillion[newDeathsPerMillion <= 0] = np.nan
+                newDeathsPerMillion = pd.DataFrame(meanImputer.fit_transform(newDeathsPerMillion))
 
                 # check all values are available for this location
                 if not totalCases.empty:
@@ -76,4 +100,16 @@ def loadHistoricalData():
             imputedDF.to_csv(PREPROCESSED_HISTORICAL_DATASET_PATH, index=False)
             return imputedDF
     else:
-        print("Historical data .CSV file not found.")
+        print("Historical data .CSV file not found. Please run update_historical_data first.")
+
+##
+# Updates historical data to the latest available update.
+##
+def updateHistoricalData():
+    url = 'https://covid.ourworldindata.org/data/owid-covid-data.csv'
+    response = requests.get(url)        
+
+    with open('owid-covid-data.csv', 'w') as f:
+        writer = csv.writer(f)
+        for line in response.iter_lines():
+            writer.writerow(line.decode('utf-8').split(','))
