@@ -75,7 +75,7 @@ def allCountriesPerMilionPlot():
         plt.ylabel('Weekly Deaths', fontsize = 16)
         plt.show()
 
-def clusteringPlot():
+def clustersPlot():
     # load historical data
     historicalDF = util.loadHistoricalData()
 
