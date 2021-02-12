@@ -13,11 +13,11 @@ following questions:
 # How to use
 For Linux systems, first install `pip`, the package installer for Python:
 ```bash
-$ sudo apt-get install python-pip
+$ sudo apt-get install python3-pip
 ```
 Install the `python-tk` package:
 ```bash
-$ sudo apt-get install python-tk
+$ sudo apt-get install python3-tk
 ```
 Install Python required packages:
 ```bash

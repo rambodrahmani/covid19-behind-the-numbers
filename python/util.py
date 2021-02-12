@@ -100,7 +100,7 @@ def loadHistoricalData():
             imputedDF.to_csv(PREPROCESSED_HISTORICAL_DATASET_PATH, index=False)
             return imputedDF
     else:
-        print("Historical data .CSV file not found. Please run update_historical_data first.")
+        print("Historical data .csv file not found. Please run update_historical_data first.")
 
 ##
 # Updates historical data to the latest available update.
