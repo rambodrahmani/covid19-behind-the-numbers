@@ -16,7 +16,7 @@ __copyright__ = "Copyright (C) 2021 Rambod Rahmani"
 __license__ = "GPLv3"
 
 HISTORICAL_DATASET_PATH = "owid-covid-data.csv"
-PREPROCESSED_HISTORICAL_DATASET_PATH = "resampled-owid-covid-data.csv"
+PREPROCESSED_HISTORICAL_DATASET_PATH = "preprocessed-owid-covid-data.csv"
 
 ##
 # Loads and preprocesses the historical data .CSV.
