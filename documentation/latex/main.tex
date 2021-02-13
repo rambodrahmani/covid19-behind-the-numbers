@@ -70,12 +70,13 @@
 %-------------------------------------------------------------------------------
 % Table of contents
 %-------------------------------------------------------------------------------
+\vspace{2.0cm}
 \tableofcontents
-\newpage
 
 %-------------------------------------------------------------------------------
 % Section: Introduction
 %-------------------------------------------------------------------------------
+\newpage
 \section{Introduction}
 \textbf{Decemebr 31, 2019}: \textit{Wuhan Municipal Health Commission, China,
 reported a cluster of cases of pneumonia in Wuhan, Hubei Province.}\\
@@ -98,8 +99,6 @@ has passed over the entire world, the aim of this work is to address the
 following questions:
 \begin{itemize}
 	\item Which countries have been affected the most by COVID-19?
-	\item Which governments have taken the right actions to stop the
-		spreading of the virus?
 	\item Is it possible to build personalized predictive models for
 		symptomatic COVID-19 patients based on basic health preconditions?
 \end{itemize}
@@ -117,6 +116,7 @@ All the content related to this work can be found at:
 %-------------------------------------------------------------------------------
 % Section: Dataset
 %-------------------------------------------------------------------------------
+\newpage
 \section{Dataset}
 Two different datasets were used:
 \begin{itemize}
@@ -176,7 +176,7 @@ of 59 columns and 68331 entries. Among others, we are interested mainly in
 The main considerations to be made about this dataset as far as it concerns data
 preprocessing are:
 \begin{itemize}
-    \item contains redundant data, e.g. values aggregated by continent (Asia,
+    \item it contains redundant data, e.g. values aggregated by continent (Asia,
     Africa, Europe, America, North America etc\dots);
     \item some of the daily data values are missing (specially for the very
     initial days of the pandemic, i.e. from 2020-01-01 to 2020-03-01)
@@ -195,7 +195,7 @@ as a result, the following preprocessing procedures were applied
     successive values; however the problem was determining $k$.
 \end{itemize}
 Taking into account also the fact that the daily data will mostly be used
-resampled with weekly frequency, there is was not need to further preprocess the
+resampled with weekly frequency, there is not need to further preprocess the
 dataset.
 \subsection{COVID-19 Medical Preconditions Data}
 The second part of this work focused on frequent pattern analysis in order to be
@@ -214,26 +214,21 @@ splitted in three main files:
         \item patients sex, age, admission date, COVID-19 test result;
         \item if the patient required hospitalization, intubation or Intensive
         care unit (ICU);
-        \item if the patient was affected by Pneumonia, diabetes, Chronic
-        obstructive pulmonary disease (COPD), asma, Asthma, Hypertension,
+        \item if the patient was affected by Pneumonia, Diabetes, Chronic
+        obstructive pulmonary disease (COPD), Asthma, Hypertension,
         Cardiovascular disease (CVD), etc\dots;
         \item death date (only for those patients who actually died).
     \end{itemize}
     \item \texttt{201128\_Catalogos.xlsx}, \texttt{201128\_Descriptores.xlsx}:
-    contain additional explanation regarding each feature present in the main
+    contain additional clarifications regarding each feature present in the main
     dataset file.
 \end{itemize}
 The rapid global spread of the virus SARS-CoV-2 has provoked a spike in
 demand for hospital care. Hospital systems across the world have been
 over-extended, including the one case we are most familiar with, Northern Italy.
 As a result, decisions on how to best allocate very limited medical resources
-have come to the forefront:
-\begin{itemize}
-    \item who to test;
-    \item who to admit into hospitals;
-    \item who to treat in an Intensive Care Unit (ICU);
-    \item who to support with a ventilator
-\end{itemize}.
+have come to the forefront: who to test, who to admit into hospitals, who to
+treat in an Intensive Care Unit (ICU), who to support with a ventilator.
 This dataset is perfect for the objective of the analysis we are interested in:
 develop personalized models that predict the following events:
 \begin{enumerate}
@@ -249,21 +244,21 @@ completely different. While the first dataset is primarily a sequence of
 numerical records, here we deal with categorical attributes. The main
 considerations to be made include
 \begin{itemize}
-    \item the dataset was split into $3$ files: one with the main content, the
+    \item the dataset is split into $3$ files: one with the main content, the
     remaining two files contain headers details;
     \item Spanish is the de facto national language spoken by the vast majority
     of Mexicans, all files are in Spanish;
     \item the dataset has a size of about $754$ MiB, with a total of 40 columns
     and 4.880.032 entries.
 \end{itemize}
-The main preprocessing procedures applied include:
-\begin{itemize}
-    \item 
-\end{itemize}
+The preprocessing stage included merging the 3 files into a single \texttt{.csv}
+file, in English, containing therefore patients details, medical preconditions,
+required medical care and if they survived SARS-CoV-2 or not.
 
 %-------------------------------------------------------------------------------
 % Section: Analysis
 %-------------------------------------------------------------------------------
+\newpage
 \section{Analysis}
 As said in the introductory section, the analysis was carried out using data
 mining and machine learning techniques in order to answer the proposed
@@ -276,30 +271,28 @@ how the COVID-19 pandemic is evolving as days goes by. For example, it is very
 common to consider the following:
 \begin{figure}[H]
     \begin{center}
-        \hspace*{-1.8cm}
-        \includegraphics[scale=0.38]{img/total-cases.pdf}
+        \hspace*{-0.2cm}
+        \includegraphics[scale=0.32]{img/total-cases.pdf}
     \end{center}
-    \vspace*{-0.4cm}
     \caption{Top 15 Countries Confirmed COVID-19 Cases}
 \end{figure}
 \noindent Is this really the right choice? Does this ranking tells us anything
 meaningful about the current undergoing pandemic situation? From what we can
-observe in Figure 1, clearly United States has higher confirmed COVID-19 cases
+observe in figure 1, clearly United States has higher confirmed COVID-19 cases
 than countries such as Spain or Italy. Taking into account that the US is a much
 bigger country, we can agree that this results do not imply that the US is more
 affected than Spain, Italy or Germany. We can therefore think of a fairer
 comparison independent of the country size: the number of infections needs to be
-normalized to the population of each country:
+normalized to the population of each country. This provides a more coherent view
+of the countries most affected by COVID-19:
 \begin{figure}[H]
     \begin{center}
-        \hspace*{-1.7cm}
-        \includegraphics[scale=0.38]{img/total-cases-per-million.pdf}
+        \hspace*{-0.2cm}
+        \includegraphics[scale=0.32]{img/total-cases-per-million.pdf}
     \end{center}
-    \vspace*{-0.4cm}
     \caption{Top 15 Countries Confirmed COVID-19 Cases Per One Million Population}
 \end{figure}
-\noindent This provides a more coherent view of the countries most affected by
-COVID-19, however it is not yet good enough: countries have different testing
+\noindent However it is not yet good enough: countries have different testing
 policies and a more intensive COVID-19 testing rate gives more confirmed cases
 while no testing at all would imply zero cases. We can all agree upon the fact
 that zero cases with no testing at all does not really mean that a given country
@@ -319,7 +312,7 @@ resampling is needed}:
         removed since no interpolation technique can really be effective in such
         cases;
         \item were few missing values were present, these were replaced using
-        the mean;
+        the constant value $0$;
     \end{itemize}
     \item plotting the data with daily granularity results in a time series plot
     which is not smooth and hard to read; the data was therefore resampled with
@@ -329,19 +322,18 @@ To impute the missing values, i.e., to infer them from the known part of the
 data, an univariate imputation algorithm was used: imputes values in the
 i-th feature dimension using only non-missing values in that feature dimension.
 To this end, the \texttt{SimpleImputer} class from the \texttt{scikit-learn}
-Python package was used. Missing values were imputed with the mean of each
-column.\\
+Python package was used.\\
 \\
 This is the resulting time series plot for some of the countries:
 \begin{figure}[H]
     \begin{center}
-        \hspace*{-1.7cm}
-        \includegraphics[scale=0.38]{img/weekly-deaths-per-million.pdf}
+        \hspace*{-0.3cm}
+        \includegraphics[scale=0.325]{img/weekly-deaths-per-million.pdf}
     \end{center}
     \caption{COVID-19 Weekly Deaths Per One Million Population}
 \end{figure}
 \noindent Daily deaths count appears to be a fair measure to compare how hard
-different countries have been hit by the virus. I addition, observing the plot
+different countries have been hit by the virus. In addition, observing the plot
 one can immediately point out that
 \begin{itemize}
     \item some countries suffered more the first wave, some others the second
@@ -356,29 +348,107 @@ one can immediately point out that
     beginning; as a result, the number of deaths went back to almost zero; yet
     they are suffering from the second wave;
     \item countries such as {\color{ts_unitedstates}United States} and
-    {\color{cyan}Brazil} have a daily death toll with and almost constant
+    {\color{cyan}Brazil} have a daily death toll with an almost constant
     trend.
 \end{itemize}
-If we extend the same reasoning to all the countries we have data for:
+If we extend the same reasoning to all the countries, figure 4 shows the weekly
+deaths per one million population for 200 countries, from Afghanistan to
+Zimbabwe. It is humanly impossible to extract any useful information from such a
+plot. However, in this mess, how many different characteristic curves can we
+find? To clean the mess, find patterns and extract the required knowledge, a
+clustering algorithm was used. This unsupervised learning technique groups
+similar data curves together.
 \begin{figure}[H]
     \begin{center}
-        \hspace*{-1.7cm}
-        \includegraphics[scale=0.38]{img/weekly-deaths-worldwide.pdf}
+        \hspace*{-0.3cm}
+        \includegraphics[scale=0.32]{img/weekly-deaths-worldwide.pdf}
     \end{center}
     \caption{COVID-19 Weekly Deaths Per One Million Population Worldwide}
 \end{figure}
-\noindent Figure 4 shows the weekly deaths per one million population for 190
-countries, from Afghanistan to Zimbabwe. It is humanly impossible to extract
-any useful information from such a plot. In this mess, how many different
-characteristic curves can we find? To clean the mess, find patterns and extract
-the required knowledge, a clustering algorithm was used. This unsupervised
-learning technique groups similar data curves together.
 \subsubsection{Clustering time series data}
+When taking into account time series, there have been several measures applied
+(Aghabozorgi, Shirkhorshidi, and Wah (2015). p. 22). For example there is
+probability-based distance, that takes into account the seasonality of data,
+Hausdorff distance defined as "the maximum of the distances from a point in any
+of the sets to the nearest point in the other set" (Rote (1991)) or Hidden
+Markov model based distance used in modelling complex time series (Zeng, Duan,
+and Wu (2010)). The most popular however is the Euclidean distance and Dynamic
+Time Warping distance. It has been proven that the Euclidean distance is the
+most efficient, but forces both time series to be the same length (Guijo-Rubio
+et al. (2018); Wang et al. (2013)). DTW method is however known to be the most
+accurate (Wang et al. (2013)).\\
+\\
+\textbf{Euclidean vs. Dynamic Time Warping}\\
+The main difference between both distances can be best understood graphically.
+The picture below shows an example of matched points of two data vectors. They
+were connected based on the minimal distance between points based on DTW (black)
+and Euclidean (red) distance. It can be seen that with DTW the 11th blue point
+matches 4 green points. When taking into account the Euclidean distance it can
+be seen that the assigned points 9-to-9 and 10-to-10 are visibly further than
+9-to-11 and 10-to-11. That can significantly impact the overall distance of
+series between each other. The DTW takes into account the shape of both time
+series much better. Dynamic Time warping is a method of calculating distance
+that is more accurate than Euclidean distance. It has an advantage over
+Euclidean if data points are shifted between each other and we want to look
+rather at its shape.
+\begin{figure}[H]
+    \begin{center}
+        \hspace*{-0.3cm}
+        \includegraphics[scale=1.1]{img/euclidean-dtw.png}
+    \end{center}
+    \caption{Visual comparison of matched points based on DTW (black) and Euclidean (red) distance}
+\end{figure}
+\noindent Additionally two time series don't have to be equal in length what is
+an assumption required by the Euclidean distance. The Euclidean distance takes
+pairs of data points and compares them to each other. DTW calculates the
+smallest distance between all points - this enables a one-to-many match.\\
+\\
+Two clustering models were built: one using the euclidean distance and one using
+the DTW algorithm. To this end, \texttt{tslearn}, a Python package that provides
+machine learning tools for the analysis of time series, was used. This package
+builds on (and hence depends on) \texttt{scikit-learn}, \texttt{numpy} and
+\texttt{scipy} libraries.
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[scale=0.32]{img/daily-deaths-euclidean-clusters.pdf}
+    \end{center}
+    \caption{Time series K-means Clustering Model using Euclidean distance}
+\end{figure}
+\noindent figure 6 shows the clusters obtained by applying the K-means
+Clustering algorithm provided by the \texttt{TimeSeriesKMeans} class. In this
+model, the metric chosen to be used for both cluster assignment and barycenter
+computation is the euclidean distance.
+The {\color{ForestGreen}green cluster} groups $138$ countries with daily deaths
+close to zero. The {\color{red}red cluster} groups $26$ countries with a huge
+number of daily deaths, that managed to get the situation controlled for a
+while, but are now suffering for the second wave. The {\color{blue}blue cluster}
+groups $36$ countries which suffer constantly COVID-19 deaths and where it seems
+the situation is getting worse and worse over time.
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[scale=0.32]{img/daily-deaths-dtw-clusters.pdf}
+    \end{center}
+    \caption{Time series K-means Clustering Model using Dynamic Time Warping algorithm}
+\end{figure}
+\noindent The Time series K-means Clustering Model using the Dynamic Time
+Warping algorithm provides different clusters. This time,
+\begin{itemize}
+    \item the {\color{ForestGreen}green cluster} groups $139$ countries;
+    \item the {\color{red}green cluster} groups $16$ countries;
+    \item the {\color{blue}green cluster} groups $45$ countries.
+\end{itemize}
+We should keep in mind that the DTW algorithm is quite CPU-intensive: as a
+matter of fact, with only $10$ iterations, it takes almost $1$ minute to
+compute the clusters shown in figure 7.\\
 To summarize, by means of a machine learning algorithm applied to the COVID-19
 data we organized countries into groups with similar epidemiological behavior.
-Surprisingly, those groups form local clusters on the world map as well. This
-unexpected insight helps us to answer the question proposed in this section.
-\subsection{Which governments have taken the right actions?}
+Surprisingly, those groups form local clusters on the world map as well.
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[scale=0.9]{img/clusters-map.png}
+    \end{center}
+    \caption{K-means Clustering Model Map}
+\end{figure}
 \subsection{Personalized predictive models for symptomatic COVID-19 patients}
 
 %-------------------------------------------------------------------------------
