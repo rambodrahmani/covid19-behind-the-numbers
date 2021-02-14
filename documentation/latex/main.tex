@@ -476,9 +476,10 @@ algorithm provides different clusters.
 \end{itemize}
 We should keep in mind that the DTW algorithm is quite CPU-intensive: as a
 matter of fact, with $50$ iterations, the same number used to obtain the model
-with the euclidean distance, takes almost $2$ minute to compute the clusters
-shown in figure 7.\\
-
+with the euclidean distance, it takes almost $2$ minutes\footnote{Please take
+this statistic as a very general one --- it is relative to an Intel Core
+i7-7700K Processor (4 Cores 8 Threads @ 4.20 GHz).} to compute the clusters
+shown in figure 7.
 \begin{figure}[H]
     \begin{center}
         \includegraphics[scale=0.9]{img/euclidean-clusters-map.png}
@@ -491,7 +492,7 @@ shown in figure 7.\\
     \end{center}
     \caption{K-means Clustering Model Worldwide Map (DTW Algorithm)}
 \end{figure}
-
+\noindent
 To summarize, by means of a machine learning algorithm applied to the COVID-19
 data we organized countries into groups with similar epidemiological behavior.
 Surprisingly, those groups form local clusters on the world map as well.

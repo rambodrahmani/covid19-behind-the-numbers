@@ -10,7 +10,6 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
 import matplotlib.pyplot as plt
-import chart_studio.plotly as py
 from sklearn.impute import SimpleImputer
 from tslearn.utils import to_time_series_dataset
 from tslearn.clustering import TimeSeriesKMeans, silhouette_score
@@ -110,6 +109,7 @@ def clustersPlot():
         euclideanKM = TimeSeriesKMeans(n_clusters = nClusters, metric = "euclidean", verbose = True, random_state = seed, max_iter = 50)
         y_pred = euclideanKM.fit_predict(historicalDFTrain)
         clusters = pd.Series(data = y_pred, index = historicalDF.index)
+        print('Mean Silhouette Coefficient of all samples: ' + str(silhouette_score(historicalDFTrain, clusters, metric="euclidean")))
 
         # plot generated clusters
         f, (ax1, ax2, ax3) = plt.subplots(3, sharex = True, sharey = True, figsize = (5, 8))
@@ -177,6 +177,7 @@ def clustersPlot():
         dtwKM = TimeSeriesKMeans(n_clusters = nClusters, metric = "dtw", verbose = True, random_state = seed, max_iter = 50, max_iter_barycenter = 50)
         y_pred = dtwKM.fit_predict(historicalDFTrain)
         clusters = pd.Series(data = y_pred, index = historicalDF.index)
+        print('Mean Silhouette Coefficient of all samples: ' + str(silhouette_score(historicalDFTrain, clusters, metric="dtw")))
 
         # plot generated clusters
         f, (ax1, ax2, ax3) = plt.subplots(3, sharex = True, sharey = True, figsize = (5, 8))
