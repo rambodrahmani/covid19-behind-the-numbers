@@ -45,6 +45,9 @@
 \addbibresource{main.bib}
 \nocite{*}
 
+%-------------------------------------------------------------------------------
+% Document
+%-------------------------------------------------------------------------------
 \begin{document}
 
 %-------------------------------------------------------------------------------
@@ -78,7 +81,7 @@
 %-------------------------------------------------------------------------------
 \newpage
 \section{Introduction}
-\textbf{Decemebr 31, 2019}: \textit{Wuhan Municipal Health Commission, China,
+\textbf{Decemebr 31, 2019}: \textit{China, Wuhan Municipal Health Commission
 reported a cluster of cases of pneumonia in Wuhan, Hubei Province.}\\
 \\
 \textbf{January 1, 2020}: \textit{World Health Organization (WHO) had set up the
@@ -95,22 +98,23 @@ At the beginning of 2020, a new virus started spreading around in the capital of
 Central China's Hubei province: the city we all came to know as Wuhan. As it
 turned out, this was the start of a world-changing event with overwhelming
 extent: Coronavirus Disease 2019 (COVID-19). After the first wave of the virus
-has passed over the entire world, the aim of this work is to address the
+has passed over the entire world, while the number of deaths by the second wave
+of COVID-19 infections is increasing, the aim of this work is to address the
 following questions:
 \begin{itemize}
-	\item Which countries have been affected the most by COVID-19?
-	\item Is it possible to build personalized predictive models for
-		symptomatic COVID-19 patients based on basic health preconditions?
+	\item \textbf{Which countries have been affected the most by COVID-19?}
+	\item \textbf{Is it possible to build personalized predictive models for
+		symptomatic COVID-19 patients based on health preconditions?}
 \end{itemize}
 In order to fully answer these questions, first of all a reliable and big enough
-dataset was needed. Second, Data Mining and Machine Learning techniques were
+dataset is needed. Second, Data Mining and Machine Learning techniques can be
 applied in order to obtain statistically significant results that could help
 address the proposed questions. In the following pages the described work and
 the resulting Python software is presented. The software architecture is
 presented in the very last section in order to focus primarily on the dataset
 retrieval and preprocessing, and on the analysis techniques and results.\\
 \\
-All the content related to this work can be found at:
+All the files related to this work are published on this GitHub repository:
 \url{https://github.com/rambodrahmani/covid19-behind-the-numbers}
 
 %-------------------------------------------------------------------------------
@@ -140,19 +144,17 @@ used in the data set, since January 21, 2020:
     \item European Centre for Disease Prevention and Control (ECDC);
     \item US Centers for Disease Control and Prevention (UCDC);
     \item Los Angeles Times;
-    \item The Mercury News;
+    \item The Mercury News.
 \end{itemize}
 The JHU CSSE data is provided as a collection of daily \texttt{.csv} files which
-need to merged to obtain the dataset with all the daily data for all the
-countries. Luckily, the \textbf{Our World in Data} organization - a
+need to be merged to obtain the dataset with all the daily data for all the
+countries. Luckily, the \textbf{Our World in Data} organization --- a
 collaborative effort between researchers at the University of Oxford, focused on
 "research and data to make progress against the world's largest problems" -
 provides the JHU CSSE data already
 merged\footnote{\url{https://ourworldindata.org/coronavirus-data}} and updated
 to the latest second as a single \texttt{.csv} file. The choice was made to use
-this \texttt{.csv} file as dataset. The Python program developed as part of this
-work, provides the \texttt{update\_historical\_data} command which can be used
-to fetch the latest available data automatically.\\
+this \texttt{.csv} file as dataset.\\
 The dataset file is \texttt{owid-covid-data.csv} with a size of $16.5$ MiB.\\
 \\
 This dataset was used for the first part of the work: finding the characteristic
@@ -171,7 +173,7 @@ of 59 columns and 68331 entries. Among others, we are interested mainly in
     \item total confirmed cases per one million population;
     \item new confirmed cases per one million population;
     \item total deaths per one million population;
-    \item new deaths per one million population;
+    \item new deaths per one million population.
 \end{itemize}
 The main considerations to be made about this dataset as far as it concerns data
 preprocessing are:
@@ -179,23 +181,27 @@ preprocessing are:
     \item it contains redundant data, e.g. values aggregated by continent (Asia,
     Africa, Europe, America, North America etc\dots);
     \item some of the daily data values are missing (specially for the very
-    initial days of the pandemic, i.e. from 2020-01-01 to 2020-03-01)
+    initial days of the pandemic, i.e. from 2020-01-01 to 2020-03-01);
+    \item some of the daily data values are negative;
 \end{itemize}
 as a result, the following preprocessing procedures were applied
 \begin{itemize}
-    \item data aggregated by continent was removed;
+    \item data aggregated by continents was removed;
     \item missing daily data values for countries were replaced\footnote{The
     \texttt{scikit-learn SimpleImputer} was used to this end} with the constant
     value $0$; this seems the most reasonable choice since these missing values
     refer to the very beginning of the pandemic; using either the mean or the
-    mode produces a distorted dataset.
+    mode results a distorted dataset;
     \item negative values were replaced with the constant value $0$ too; another
     strategy was tried first: using the moving average with window size $k$ to
     approximate the negative value as the average of the $k$ previous and
-    successive values; however the problem was determining $k$.
+    successive values; however the problem in this case is determining $k$:
+    negative values appear sequentially, at the very beginning and end of the
+    dataset.
 \end{itemize}
 Taking into account also the fact that the daily data will mostly be used
-resampled with weekly frequency, there is not need to further preprocess the
+resampled with weekly frequency and that by visual inspection it appears that
+negative values are close to zero, there is no need to further preprocess this
 dataset.
 \subsection{COVID-19 Medical Preconditions Data}
 The second part of this work focused on frequent pattern analysis in order to be
@@ -204,19 +210,18 @@ had prior medical preconditions. Finding such patterns is a crucial task that
 might allow to best allocate very limited medical resources. The dataset
 required for such type of analysis was not easy to find: usually COVID-19
 datasets only contain daily values (numbers) of confirmed cases and deaths. They
-rarely come equipped with the medical preconditions of the patients. Anyway,
+rarely come equipped with the medical preconditions of the patients. Luckily,
 the Federal government of Mexico\cite{mexico} provided such a dataset: it is
 splitted in three main files:
 \begin{itemize}
-    \item \texttt{210206COVID19MEXICO.csv}: the main data file containing, among
+    \item \texttt{210206COVID19MEXICO.csv}: the main file containing, among
     others,
     \begin{itemize}
         \item patients sex, age, admission date, COVID-19 test result;
         \item if the patient required hospitalization, intubation or Intensive
         care unit (ICU);
-        \item if the patient was affected by Pneumonia, Diabetes, Chronic
-        obstructive pulmonary disease (COPD), Asthma, Hypertension,
-        Cardiovascular disease (CVD), etc\dots;
+        \item if the patient was affected by Pneumonia, Diabetes, Asthma,
+        Hypertension, Cardiovascular disease (CVD), etc\dots;
         \item death date (only for those patients who actually died).
     \end{itemize}
     \item \texttt{201128\_Catalogos.xlsx}, \texttt{201128\_Descriptores.xlsx}:
@@ -229,8 +234,8 @@ over-extended, including the one case we are most familiar with, Northern Italy.
 As a result, decisions on how to best allocate very limited medical resources
 have come to the forefront: who to test, who to admit into hospitals, who to
 treat in an Intensive Care Unit (ICU), who to support with a ventilator.
-This dataset is perfect for the objective of the analysis we are interested in:
-develop personalized models that predict the following events:
+This dataset is perfect for the objective of the analysis we are interested in
+--- develop personalized models that predict the following events:
 \begin{enumerate}
     \item hospitalization;
     \item need for ICU;
@@ -262,13 +267,28 @@ required medical care and if they survived SARS-CoV-2 or not.
 \section{Analysis}
 As said in the introductory section, the analysis was carried out using data
 mining and machine learning techniques in order to answer the proposed
-questions. Each of the following subsections is focused on one of them.
+questions. As we move on to build our models, we should do that by taking a very
+critical look at models. Keep in mind the aphorism "All models are wrong", often
+expanded as "All models are wrong, but some are useful". The modeller's paradox
+is even more true when crisis erupts: unfortunately, in such situations, data
+are lacking or of poor quality. What is worse is that models do not simulate the
+behaviours of citizens to stop seeking medical assistance in the case of a
+pandemic (because of fear), models do not capture the effects of sustained lock
+down as far as it concerns mental health and general social well being. Models
+can not simulate the social and economical consequences of business failures and
+economic depressions, nor do models simulate the effects of increase of violence
+and policing on cultural norms or attitudes to democracy. And also importantly,
+is that models do not translate well necessarily across different cultural and
+political boundaries.
 \subsection{Which countries have been affected the most by COVID-19?}
 To answer the very first question, we need to understand what is hidden behind
 the official numbers and charts of confirmed COVID-19 active cases and deaths.
-We are so used to watching them and sometimes we think we might even understand
-how the COVID-19 pandemic is evolving as days goes by. For example, it is very
-common to consider the following:
+We are not doing anything clever at all, just plotting the data and trying to
+learn from it.\\
+\\
+We are so used to watching COVID-19 numbers and charts nowadays and sometimes we
+think we might even understand how the pandemic is evolving as days goes by. For
+example, it is very common to consider the following:
 \begin{figure}[H]
     \begin{center}
         \hspace*{-0.2cm}
@@ -301,6 +321,17 @@ rate of testing.\\
 This quantity is the number of deaths: this value is unbiased by the testing
 rate. We will use the normalized number of daily deaths for comparing
 countries.\\
+\\
+Before moving on, it is important to clarify that when we deal with COVID-19
+deaths we refer to number of people who died in the COVID-19 time period
+(starting from January 2020 till today). It is important to point out that
+on the death certificate of these individuals there might be no reference at
+all to the COVID-19 pandemic. This is because, as a result of different
+policies in different countries worldwide, it is hard to obtain reliable
+datasets with daily deaths that differentiate between those labeled COVID-19
+and those completely related to other causes. Additionally, sometimes there is
+no certainty about whether COVID-19 did or did not play a role in the death of
+an individual.\\
 \\
 While the previous results were obtained using the original COVID-19 historical
 dataset\cite{ourworldindata}, \textbf{this time some preprocessing and
@@ -355,9 +386,7 @@ If we extend the same reasoning to all the countries, figure 4 shows the weekly
 deaths per one million population for 200 countries, from Afghanistan to
 Zimbabwe. It is humanly impossible to extract any useful information from such a
 plot. However, in this mess, how many different characteristic curves can we
-find? To clean the mess, find patterns and extract the required knowledge, a
-clustering algorithm was used. This unsupervised learning technique groups
-similar data curves together.
+find?
 \begin{figure}[H]
     \begin{center}
         \hspace*{-0.3cm}
@@ -365,18 +394,21 @@ similar data curves together.
     \end{center}
     \caption{COVID-19 Weekly Deaths Per One Million Population Worldwide}
 \end{figure}
+\noindent
+To clean the mess, find patterns and extract the required knowledge, a
+clustering algorithm was used. This unsupervised learning technique groups
+similar data curves together.
 \subsubsection{Clustering time series data}
-When taking into account time series, there have been several measures applied
-(Aghabozorgi, Shirkhorshidi, and Wah (2015). p. 22). For example there is
-probability-based distance, that takes into account the seasonality of data,
-Hausdorff distance defined as "the maximum of the distances from a point in any
-of the sets to the nearest point in the other set" (Rote (1991)) or Hidden
-Markov model based distance used in modelling complex time series (Zeng, Duan,
-and Wu (2010)). The most popular however is the Euclidean distance and Dynamic
-Time Warping distance. It has been proven that the Euclidean distance is the
-most efficient, but forces both time series to be the same length (Guijo-Rubio
-et al. (2018); Wang et al. (2013)). DTW method is however known to be the most
-accurate (Wang et al. (2013)).\\
+When taking into account time series clustering algorithm, there have been
+several measures applied. For example there is probability-based distance, that
+takes into account the seasonality of data, Hausdorff distance defined as "the
+maximum of the distances from a point in any of the sets to the nearest point in
+the other set" (Rote (1991)) or Hidden Markov model based distance used in
+modelling complex time series (Zeng, Duan, and Wu (2010)). The most popular
+however is the Euclidean distance and Dynamic Time Warping distance. It has been
+proven that the Euclidean distance is the most efficient, but forces both time
+series to be the same length. The DTW method is however known to be the most
+accurate.\\
 \\
 \textbf{Euclidean vs. Dynamic Time Warping}\\
 The main difference between both distances can be best understood graphically.
@@ -401,7 +433,7 @@ rather at its shape.
 \noindent Additionally two time series don't have to be equal in length what is
 an assumption required by the Euclidean distance. The Euclidean distance takes
 pairs of data points and compares them to each other. DTW calculates the
-smallest distance between all points - this enables a one-to-many match.\\
+smallest distance between all points --- this enables a one-to-many match.\\
 \\
 Two clustering models were built: one using the euclidean distance and one using
 the DTW algorithm. To this end, \texttt{tslearn}, a Python package that provides
@@ -414,41 +446,55 @@ builds on (and hence depends on) \texttt{scikit-learn}, \texttt{numpy} and
     \end{center}
     \caption{Time series K-means Clustering Model using Euclidean distance}
 \end{figure}
-\noindent figure 6 shows the clusters obtained by applying the K-means
+\noindent Figure 6 shows the clusters obtained by applying the K-means
 Clustering algorithm provided by the \texttt{TimeSeriesKMeans} class. In this
 model, the metric chosen to be used for both cluster assignment and barycenter
-computation is the euclidean distance.
-The {\color{ForestGreen}green cluster} groups $138$ countries with daily deaths
-close to zero. The {\color{red}red cluster} groups $26$ countries with a huge
-number of daily deaths, that managed to get the situation controlled for a
-while, but are now suffering for the second wave. The {\color{blue}blue cluster}
-groups $36$ countries which suffer constantly COVID-19 deaths and where it seems
-the situation is getting worse and worse over time.
+computation is the euclidean distance:
+\begin{itemize}
+    \item the {\color{ForestGreen}green cluster} groups $138$ countries with
+    daily deaths close to zero;
+    \item the {\color{red}red cluster} groups $26$ countries with a huge number
+    of daily deaths, that managed to get the situation controlled for a while,
+    but are now suffering for the second wave;
+    \item the {\color{blue}blue cluster} groups $36$ countries which suffer
+    constantly COVID-19 deaths and where it seems the situation is getting worse
+    and worse over time.
+\end{itemize}
+The time series K-means clustering model using the Dynamic Time Warping
+algorithm provides different clusters.
 \begin{figure}[H]
     \begin{center}
         \includegraphics[scale=0.32]{img/daily-deaths-dtw-clusters.pdf}
     \end{center}
     \caption{Time series K-means Clustering Model using Dynamic Time Warping algorithm}
 \end{figure}
-\noindent The time series K-means clustering model using the Dynamic Time
-Warping algorithm provides different clusters. This time,
+\noindent This time,
 \begin{itemize}
     \item the {\color{ForestGreen}green cluster} groups $139$ countries;
-    \item the {\color{red}green cluster} groups $16$ countries;
-    \item the {\color{blue}green cluster} groups $45$ countries.
+    \item the {\color{red}red cluster} groups $16$ countries;
+    \item the {\color{blue}blue cluster} groups $45$ countries.
 \end{itemize}
 We should keep in mind that the DTW algorithm is quite CPU-intensive: as a
-matter of fact, with only $10$ iterations, it takes almost $1$ minute to
-compute the clusters shown in figure 7.\\
+matter of fact, with $50$ iterations, the same number used to obtain the model
+with the euclidean distance, takes almost $2$ minute to compute the clusters
+shown in figure 7.\\
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[scale=0.9]{img/euclidean-clusters-map.png}
+    \end{center}
+    \caption{K-means Clustering Model Worldwide Map (Euclidean Distance)}
+\end{figure}
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[scale=0.9]{img/dtw-clusters-map.png}
+    \end{center}
+    \caption{K-means Clustering Model Worldwide Map (DTW Algorithm)}
+\end{figure}
+
 To summarize, by means of a machine learning algorithm applied to the COVID-19
 data we organized countries into groups with similar epidemiological behavior.
 Surprisingly, those groups form local clusters on the world map as well.
-\begin{figure}[H]
-    \begin{center}
-        \includegraphics[scale=0.9]{img/clusters-map.png}
-    \end{center}
-    \caption{K-means Clustering Model Map}
-\end{figure}
 \subsection{Personalized predictive models for symptomatic COVID-19 patients}
 
 %-------------------------------------------------------------------------------

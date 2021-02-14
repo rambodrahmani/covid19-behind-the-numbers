@@ -8,12 +8,12 @@
 import util
 import numpy as np
 import pandas as pd
+import plotly.graph_objs as go
 import matplotlib.pyplot as plt
+import chart_studio.plotly as py
 from sklearn.impute import SimpleImputer
 from tslearn.utils import to_time_series_dataset
 from tslearn.clustering import TimeSeriesKMeans, silhouette_score
-import chart_studio.plotly as py
-import plotly.graph_objs as go
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 
 __author__ = "Rambod Rahmani"
@@ -107,7 +107,7 @@ def clustersPlot():
 
         # time series K-means clustering Model using Euclidean distance
         print('K-Means Model using Euclidean distance')
-        euclideanKM = TimeSeriesKMeans(n_clusters = nClusters, metric = "euclidean", verbose = True, random_state = seed, max_iter = 25)
+        euclideanKM = TimeSeriesKMeans(n_clusters = nClusters, metric = "euclidean", verbose = True, random_state = seed, max_iter = 50)
         y_pred = euclideanKM.fit_predict(historicalDFTrain)
         clusters = pd.Series(data = y_pred, index = historicalDF.index)
 
@@ -132,18 +132,18 @@ def clustersPlot():
         ########################################################################
         # `iplot` can only run inside an IPython Notebook.
         ########################################################################
-        # data = dict(type = 'choropleth',
-        #             locations = clusters.index.to_list(), 
-        #             colorscale = [(0,"green"), (0.5,"red"), (1,"blue")],
-        #             locationmode = 'country names',
-        #             z = clusters.values,
-        #             text = clusters.index.to_list(),
-        #             colorbar = {'title':'Clusters'})
-        # layout = dict(title = 'Countries COVID-19 Clusters',
-        #               geo = dict(showframe = False, projection = {'type': 'equirectangular'}))
-        # fig = choromap3 = go.Figure(data = [data], layout = layout)
-        # fig.update_layout(autosize = False, width = 2200, height = 2200,)
-        # iplot(choromap3)
+        data = dict(type = 'choropleth',
+                    locations = clusters.index.to_list(), 
+                    colorscale = [(0,"green"), (0.5,"red"), (1,"blue")],
+                    locationmode = 'country names',
+                    z = clusters.values,
+                    text = clusters.index.to_list(),
+                    colorbar = {'title':'Clusters'})
+        layout = dict(title = 'Countries COVID-19 Clusters',
+                      geo = dict(showframe = False, projection = {'type': 'equirectangular'}))
+        fig = choromap3 = go.Figure(data = [data], layout = layout)
+        fig.update_layout(autosize = False, width = 2200, height = 2200,)
+        iplot(choromap3)
         ########################################################################
 
     # load historical data
@@ -174,7 +174,7 @@ def clustersPlot():
 
         # time series K-means clustering Model using Dynamic Time Warping
         print('K-Means Model using Dynamic Time Warping')
-        dtwKM = TimeSeriesKMeans(n_clusters = nClusters, metric = "dtw", verbose = True, random_state = seed, max_iter = 10, max_iter_barycenter = 5)
+        dtwKM = TimeSeriesKMeans(n_clusters = nClusters, metric = "dtw", verbose = True, random_state = seed, max_iter = 50, max_iter_barycenter = 50)
         y_pred = dtwKM.fit_predict(historicalDFTrain)
         clusters = pd.Series(data = y_pred, index = historicalDF.index)
 
@@ -195,3 +195,20 @@ def clustersPlot():
         plt.ylim(0, 40)
         plt.setp([a.get_xticklabels() for a in f.axes[:-1]], visible = False)
         plt.show()
+
+        ########################################################################
+        # `iplot` can only run inside an IPython Notebook.
+        ########################################################################
+        data = dict(type = 'choropleth',
+                    locations = clusters.index.to_list(), 
+                    colorscale = [(0,"green"), (0.5,"red"), (1,"blue")],
+                    locationmode = 'country names',
+                    z = clusters.values,
+                    text = clusters.index.to_list(),
+                    colorbar = {'title':'Clusters'})
+        layout = dict(title = 'Countries COVID-19 Clusters',
+                      geo = dict(showframe = False, projection = {'type': 'equirectangular'}))
+        fig = choromap3 = go.Figure(data = [data], layout = layout)
+        fig.update_layout(autosize = False, width = 2200, height = 2200,)
+        iplot(choromap3)
+        ########################################################################
