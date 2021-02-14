@@ -435,11 +435,40 @@ an assumption required by the Euclidean distance. The Euclidean distance takes
 pairs of data points and compares them to each other. DTW calculates the
 smallest distance between all points --- this enables a one-to-many match.\\
 \\
-Two clustering models were built: one using the euclidean distance and one using
-the DTW algorithm. To this end, \texttt{tslearn}, a Python package that provides
-machine learning tools for the analysis of time series, was used. This package
-builds on (and hence depends on) \texttt{scikit-learn}, \texttt{numpy} and
-\texttt{scipy} libraries.
+Two K-means clustering models were built: one using the euclidean distance and
+one using the DTW algorithm. To this end, \texttt{tslearn}, a Python package
+that provides machine learning tools for the analysis of time series, was used.
+This package builds on (and hence depends on) \texttt{scikit-learn},
+\texttt{numpy} and \texttt{scipy} libraries.\\
+\\
+First of all, the optimal number of clusters was evaluated using the mean
+silhouette coefficient for all samples. The different silhouette values obtained
+for the K-Means Model are listed below:
+\begin{itemize}
+    \item 2 Clusters silhouette:
+    \begin{itemize}
+        \item Euclidean distance: $0.63$ --- Dynamic Time Warping: $0.71$
+    \end{itemize}
+    \item 3 Clusters silhouette:
+    \begin{itemize}
+        \item Euclidean distance: $0.56$ --- Dynamic Time Warping: $0.66$
+    \end{itemize}
+    \item 4 Clusters silhouette:
+    \begin{itemize}
+        \item Euclidean distance: $0.58$ --- Dynamic Time Warping: $0.66$
+    \end{itemize}
+    \item 5 Clusters silhouette:
+    \begin{itemize}
+        \item Euclidean distance: $0.59$ --- Dynamic Time Warping: $0.63$
+    \end{itemize}
+\end{itemize}
+The best value for the mean silhouette coefficient is obtained with only $2$
+clusters. However, taking into account our knowledge of the phenomena, we
+expect to find $3$ clusters of countries: those hardly hit by both the first and
+the second wave, those that have been hit by either the first or the second
+wave, and those suffering COVID-19 deaths constantly. Two K-means models with
+3 clusters were therefore evaluated: one trained using the euclidean distance
+and the other using the dynamic time warping algorithm.
 \begin{figure}[H]
     \begin{center}
         \includegraphics[scale=0.32]{img/daily-deaths-euclidean-clusters.pdf}
@@ -447,9 +476,9 @@ builds on (and hence depends on) \texttt{scikit-learn}, \texttt{numpy} and
     \caption{Time series K-means Clustering Model using Euclidean distance}
 \end{figure}
 \noindent Figure 6 shows the clusters obtained by applying the K-means
-Clustering algorithm provided by the \texttt{TimeSeriesKMeans} class. In this
-model, the metric chosen to be used for both cluster assignment and barycenter
-computation is the euclidean distance:
+Clustering algorithm provided by the \texttt{TimeSeriesKMeans} class of the
+\texttt{tslearn} Python package. In this model, the metric chosen to be used for
+both cluster assignment and barycenter computation is the euclidean distance:
 \begin{itemize}
     \item the {\color{ForestGreen}green cluster} groups $138$ countries with
     daily deaths close to zero;
@@ -458,21 +487,16 @@ computation is the euclidean distance:
     but are now suffering for the second wave;
     \item the {\color{blue}blue cluster} groups $36$ countries which suffer
     constantly COVID-19 deaths and where it seems the situation is getting worse
-    and worse over time.
+    and worse over time;
+    \item mean silhouette coefficient for all samples: $0.56$.
 \end{itemize}
 The time series K-means clustering model using the Dynamic Time Warping
-algorithm provides different clusters.
-\begin{figure}[H]
-    \begin{center}
-        \includegraphics[scale=0.32]{img/daily-deaths-dtw-clusters.pdf}
-    \end{center}
-    \caption{Time series K-means Clustering Model using Dynamic Time Warping algorithm}
-\end{figure}
-\noindent This time,
+algorithm provides different clusters. As shown in figure 7,
 \begin{itemize}
     \item the {\color{ForestGreen}green cluster} groups $139$ countries;
     \item the {\color{red}red cluster} groups $16$ countries;
-    \item the {\color{blue}blue cluster} groups $45$ countries.
+    \item the {\color{blue}blue cluster} groups $45$ countries;
+    \item mean silhouette coefficient for all samples: $0.66$.
 \end{itemize}
 We should keep in mind that the DTW algorithm is quite CPU-intensive: as a
 matter of fact, with $50$ iterations, the same number used to obtain the model
@@ -480,6 +504,21 @@ with the euclidean distance, it takes almost $2$ minutes\footnote{Please take
 this statistic as a very general one --- it is relative to an Intel Core
 i7-7700K Processor (4 Cores 8 Threads @ 4.20 GHz).} to compute the clusters
 shown in figure 7.
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[scale=0.32]{img/daily-deaths-dtw-clusters.pdf}
+    \end{center}
+    \caption{Time series K-means Clustering Model using Dynamic Time Warping algorithm}
+\end{figure}
+\noindent
+To compare the two models, as there is no ground truth when dealing with
+clustering problems, I represented the clusters obtained by the two models on
+the world map. Surprisingly enough, as shown in figure 8 and in figure 9,
+those groups form local clusters on the world map as well. The nature of the
+phenomena we are analysing, the spread of the SARS-CoV-2 pandemic, tells us that
+how well this local clusters are grouped in the world map, in terms of
+neighboring countries can be used as a measure of how well the algorithm
+performed:
 \begin{figure}[H]
     \begin{center}
         \includegraphics[scale=0.9]{img/euclidean-clusters-map.png}
@@ -493,21 +532,26 @@ shown in figure 7.
     \caption{K-means Clustering Model Worldwide Map (DTW Algorithm)}
 \end{figure}
 \noindent
-To summarize, by means of a machine learning algorithm applied to the COVID-19
-data we organized countries into groups with similar epidemiological behavior.
-Surprisingly, those groups form local clusters on the world map as well.
+Just by observing the two world maps presented, it goes without saying that the
+DTW Model performed better.
 \subsection{Personalized predictive models for symptomatic COVID-19 patients}
 
 %-------------------------------------------------------------------------------
 % Section: Conclusion
 %-------------------------------------------------------------------------------
+\newpage
 \section{Conclusion}
 
 %-------------------------------------------------------------------------------
 % Section: Software Architecture
 %-------------------------------------------------------------------------------
+\newpage
 \section{Software Architecture}
 
+%-------------------------------------------------------------------------------
+% Bibliography
+%-------------------------------------------------------------------------------
+\newpage
 \printbibliography
 
 \end{document}
