@@ -17,6 +17,7 @@ def plot():
     # load historical data
     historicalDF = util.loadHistoricalData()
 
+    # check historical data was correctly loaded
     if not historicalDF is None:
         # group raw data by country aggregating on total cases
         historicalDF = historicalDF.groupby("location", as_index = False)["total_cases"].last()
@@ -43,6 +44,7 @@ def perMilionPlot():
     # load historical data
     historicalDF = util.loadHistoricalData()
 
+    # check historical data was correctly loaded
     if not historicalDF is None:
         # group raw data by country aggregating on total cases
         historicalDF = historicalDF.groupby("location", as_index = False)["total_cases_per_million"].last()

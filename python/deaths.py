@@ -23,6 +23,7 @@ def perMilionPlot():
     # load historical data
     historicalDF = util.loadHistoricalData()
 
+    # check historical data was correctly loaded
     if not historicalDF is None:
         # extract features of interest
         historicalDF = historicalDF[['date', 'location', 'new_deaths_per_million']]
@@ -54,6 +55,7 @@ def allCountriesPerMilionPlot():
     # load historical data
     historicalDF = util.loadHistoricalData()
 
+    # check historical data was correctly loaded
     if not historicalDF is None:
         # extract features of interest
         historicalDF = historicalDF[['date', 'location', 'new_deaths_per_million']]
@@ -81,6 +83,7 @@ def clustersPlot():
     # load historical data
     historicalDF = util.loadHistoricalData()
 
+    # check historical data was correctly loaded
     if not historicalDF is None:
         # extract features of interest
         historicalDF = historicalDF[['date', 'location', 'new_deaths_per_million']]
@@ -149,6 +152,7 @@ def clustersPlot():
     # load historical data
     historicalDF = util.loadHistoricalData()
 
+    # check historical data was correctly loaded
     if not historicalDF is None:
         # extract features of interest
         historicalDF = historicalDF[['date', 'location', 'new_deaths_per_million']]

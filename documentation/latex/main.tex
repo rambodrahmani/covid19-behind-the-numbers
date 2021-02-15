@@ -294,12 +294,14 @@ example, it is very common to consider the following:
         \hspace*{-0.2cm}
         \includegraphics[scale=0.32]{img/total-cases.pdf}
     \end{center}
+    \vspace{-0.2cm}
     \caption{Top 15 Countries Confirmed COVID-19 Cases}
 \end{figure}
-\noindent Is this really the right choice? Does this ranking tells us anything
-meaningful about the current undergoing pandemic situation? From what we can
-observe in figure 1, clearly United States has higher confirmed COVID-19 cases
-than countries such as Spain or Italy. Taking into account that the US is a much
+\noindent
+Is this really the right choice? Does this ranking tells us anything meaningful
+about the current undergoing pandemic situation? From what we can observe in
+figure 1, clearly United States has higher confirmed COVID-19 cases than
+countries such as Spain or Italy. Taking into account that the US is a much
 bigger country, we can agree that this results do not imply that the US is more
 affected than Spain, Italy or Germany. We can therefore think of a fairer
 comparison independent of the country size: the number of infections needs to be
@@ -310,14 +312,16 @@ of the countries most affected by COVID-19:
         \hspace*{-0.2cm}
         \includegraphics[scale=0.32]{img/total-cases-per-million.pdf}
     \end{center}
+    \vspace{-0.2cm}
     \caption{Top 15 Countries Confirmed COVID-19 Cases Per One Million Population}
 \end{figure}
-\noindent However it is not yet good enough: countries have different testing
-policies and a more intensive COVID-19 testing rate gives more confirmed cases
-while no testing at all would imply zero cases. We can all agree upon the fact
-that zero cases with no testing at all does not really mean that a given country
-is not affected by the pandemic. We therefore need a quantity unrelated to the
-rate of testing.\\
+\noindent
+However it is not yet good enough: countries have different testing policies and
+a more intensive COVID-19 testing rate gives more confirmed cases while no
+testing at all would imply zero cases. We can all agree upon the fact that zero
+cases with no testing at all does not really mean that a given country is not
+affected by the pandemic. We therefore need a quantity unrelated to the rate of
+testing.\\
 This quantity is the number of deaths: this value is unbiased by the testing
 rate. We will use the normalized number of daily deaths for comparing
 countries.\\
@@ -361,11 +365,13 @@ This is the resulting time series plot for some of the countries:
         \hspace*{-0.3cm}
         \includegraphics[scale=0.325]{img/weekly-deaths-per-million.pdf}
     \end{center}
+    \vspace{-0.2cm}
     \caption{COVID-19 Weekly Deaths Per One Million Population}
 \end{figure}
-\noindent Daily deaths count appears to be a fair measure to compare how hard
-different countries have been hit by the virus. In addition, observing the plot
-one can immediately point out that
+\noindent
+Daily deaths count appears to be a fair measure to compare how hard different
+countries have been hit by the virus. In addition, observing the plot one can
+immediately point out that
 \begin{itemize}
     \item some countries suffered more the first wave, some others the second
     and some both;
@@ -392,6 +398,7 @@ find?
         \hspace*{-0.3cm}
         \includegraphics[scale=0.32]{img/weekly-deaths-worldwide.pdf}
     \end{center}
+    \vspace{-0.2cm}
     \caption{COVID-19 Weekly Deaths Per One Million Population Worldwide}
 \end{figure}
 \noindent
@@ -428,10 +435,12 @@ rather at its shape.
         \hspace*{-0.3cm}
         \includegraphics[scale=1.1]{img/euclidean-dtw.png}
     \end{center}
+    \vspace{-0.2cm}
     \caption{Visual comparison of matched points based on DTW (black) and Euclidean (red) distance}
 \end{figure}
-\noindent Additionally two time series don't have to be equal in length what is
-an assumption required by the Euclidean distance. The Euclidean distance takes
+\noindent
+Additionally two time series don't have to be equal in length what is an
+assumption required by the Euclidean distance. The Euclidean distance takes
 pairs of data points and compares them to each other. DTW calculates the
 smallest distance between all points --- this enables a one-to-many match.\\
 \\
@@ -463,7 +472,7 @@ for the K-Means Model are listed below:
     \end{itemize}
 \end{itemize}
 The best value for the mean silhouette coefficient is obtained with only $2$
-clusters. However, taking into account our knowledge of the phenomena, we
+clusters. However, taking into account our knowledge of the phenomenon, we
 expect to find $3$ clusters of countries: those hardly hit by both the first and
 the second wave, those that have been hit by either the first or the second
 wave, and those suffering COVID-19 deaths constantly. Two K-means models with
@@ -473,10 +482,12 @@ and the other using the dynamic time warping algorithm.
     \begin{center}
         \includegraphics[scale=0.32]{img/daily-deaths-euclidean-clusters.pdf}
     \end{center}
+    \vspace{-0.2cm}
     \caption{Time series K-means Clustering Model using Euclidean distance}
 \end{figure}
-\noindent Figure 6 shows the clusters obtained by applying the K-means
-Clustering algorithm provided by the \texttt{TimeSeriesKMeans} class of the
+\noindent
+Figure 6 shows the clusters obtained by applying the K-means Clustering
+algorithm provided by the \texttt{TimeSeriesKMeans} class of the
 \texttt{tslearn} Python package. In this model, the metric chosen to be used for
 both cluster assignment and barycenter computation is the euclidean distance:
 \begin{itemize}
@@ -508,6 +519,7 @@ shown in figure 7.
     \begin{center}
         \includegraphics[scale=0.32]{img/daily-deaths-dtw-clusters.pdf}
     \end{center}
+    \vspace{-0.2cm}
     \caption{Time series K-means Clustering Model using Dynamic Time Warping algorithm}
 \end{figure}
 \noindent
@@ -515,23 +527,37 @@ To compare the two models, as there is no ground truth when dealing with
 clustering problems, I represented the clusters obtained by the two models on
 the world map. Surprisingly enough, as shown in figure 8 and in figure 9,
 those groups form local clusters on the world map as well. The nature of the
-phenomena we are analysing, the spread of the SARS-CoV-2 pandemic, tells us that
-how well this local clusters are grouped in the world map, in terms of
+phenomenon we are analysing, the spread of the SARS-CoV-2 pandemic, tells us
+that how well this local clusters are grouped in the world map, in terms of
 neighboring countries can be used as a measure of how well the algorithm
 performed:
 \begin{figure}[H]
     \begin{center}
         \includegraphics[scale=0.9]{img/euclidean-clusters-map.png}
     \end{center}
+    \vspace{-0.2cm}
     \caption{K-means Clustering Model Worldwide Map (Euclidean Distance)}
 \end{figure}
+\noindent
+A quick look at the map below shows that the red cluster is located on the
+European continent. Furthermore, countries from the blue cluster are
+concentrated in Russia, the middle east and African continent.
 \begin{figure}[H]
     \begin{center}
         \includegraphics[scale=0.9]{img/dtw-clusters-map.png}
     \end{center}
+    \vspace{-0.2cm}
     \caption{K-means Clustering Model Worldwide Map (DTW Algorithm)}
 \end{figure}
 \noindent
+One important observation to be made is that changing from the euclidean
+distance to the DTW algorithm, the US moves from the {\color{red}red cluster} to
+the {\color{ForestGreen}green cluster}. Also, the Russian Federation moves from
+the {\color{ForestGreen}green cluster} to the {\color{blue}blue cluster}. This
+is understandable if we take into account that the US has a population of
+$328.2$ million while the Russian Federation has a population of $144.4$
+million.\\
+\\
 Just by observing the two world maps presented, it goes without saying that the
 DTW Model performed better.
 \subsection{Personalized predictive models for symptomatic COVID-19 patients}
