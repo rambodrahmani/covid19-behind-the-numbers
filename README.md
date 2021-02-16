@@ -21,7 +21,7 @@ $ sudo apt-get install python3-tk
 ```
 Install Python required packages:
 ```bash
-$ python3 -m pip install -U h5py pandas matplotlib scikit-learn llvmlite tslearn plotly apyori
+$ python3 -m pip install -U h5py pandas matplotlib scikit-learn llvmlite tslearn plotly mlxtend
 ```
 Simply run
 ```bash
