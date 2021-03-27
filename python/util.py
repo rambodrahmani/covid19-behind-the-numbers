@@ -15,12 +15,12 @@ __author__ = "Rambod Rahmani"
 __copyright__ = "Copyright (C) 2021 Rambod Rahmani"
 __license__ = "GPLv3"
 
-HISTORICAL_DATASET_PATH = "owid-covid-data.csv"
-PREPROCESSED_HISTORICAL_DATASET_PATH = "preprocessed-owid-covid-data.csv"
-PRECONDITIONS_DATASET_PATH = "../dataset/datos_abiertos_covid19.zip"
+HISTORICAL_DATASET_PATH = "../dataset/owid-covid-data.csv"
+PREPROCESSED_HISTORICAL_DATASET_PATH = "../dataset/preprocessed-owid-covid-data.csv"
+PRECONDITIONS_DATASET_PATH = "../dataset/datos_abiertos_covid19.gz"
 
 ##
-# Loads and preprocesses the historical data .csv file.
+# Loads and preprocesses the historical dataset .csv file.
 ##
 def loadHistoricalData():
     # check if the .csv file exists
@@ -102,7 +102,7 @@ def loadHistoricalData():
             imputedDF.to_csv(PREPROCESSED_HISTORICAL_DATASET_PATH, index = False)
             return imputedDF
     else:
-        print("Historical data .csv file not found. Please run update_historical_data first.")
+        print("Historical dataset .csv file not found. Please run update_historical_data first.")
 
 ##
 # Updates historical data to the latest available update.
@@ -111,7 +111,7 @@ def updateHistoricalData():
     url = 'https://covid.ourworldindata.org/data/owid-covid-data.csv'
     response = requests.get(url)        
 
-    with open('owid-covid-data.csv', 'w') as f:
+    with open(HISTORICAL_DATASET_PATH, 'w') as f:
         writer = csv.writer(f)
         for line in response.iter_lines():
             writer.writerow(line.decode('utf-8').split(','))
@@ -128,7 +128,7 @@ def printHistoricalDFInfo():
         print(historicalDF.info(verbose = True))
 
 ##
-# Loads and preprocesses the historical data .csv file.
+# Loads and preprocesses the preconditions dataset .csv file.
 ##
 def loadPreconditionsData():
     # check if the .csv file exists
@@ -166,7 +166,7 @@ def loadPreconditionsData():
 
         return preconditionsDF;
     else:
-        print("Preconditions data .csv file not found.")
+        print("Preconditions dataset .csv file not found.")
 
 ##
 # Prints preconditions dataframe info.
