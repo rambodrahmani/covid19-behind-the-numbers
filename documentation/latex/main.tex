@@ -131,7 +131,7 @@ Two different datasets were used:
     the most detailed dataset I was able to retrieve is the one provided by
     \textbf{The Federal government of Mexico}.
 \end{itemize}
-The content of the datasets, the feature of interest used in what follows and
+The content of the datasets, the features of interest used in what follows and
 the preprocessing procedures applied on each of them are detailed in the
 following subsections.
 \subsection{COVID-19 Daily Data}
@@ -150,21 +150,23 @@ The JHU CSSE data is provided as a collection of daily \texttt{.csv} files which
 need to be merged to obtain the dataset with all the daily data for all the
 countries. Luckily, the \textbf{Our World in Data} organization --- a
 collaborative effort between researchers at the University of Oxford, focused on
-"research and data to make progress against the world's largest problems" -
+"research and data to make progress against the world's largest problems" ---
 provides the JHU CSSE data already
 merged\footnote{\url{https://ourworldindata.org/coronavirus-data}} and updated
 to the latest second as a single \texttt{.csv} file. The choice was made to use
 this \texttt{.csv} file as dataset.\\
-The dataset file is \texttt{owid-covid-data.csv} with a size of $16.5$ MiB.\\
+The dataset file is named \texttt{owid-covid-data.csv} with a size of $16.5$
+MiB.\\
 \\
 This dataset was used for the first part of the work: finding the characteristic
 curves of each country and grouping together countries with comparable behavior
-by means of clustering algorithms. This will provide us a truthful overview of
-the countries most affected by COVID-19 and the ones that put in place
-appropriate policies to handle the pandemic widespread.
+by means of timeseries clustering algorithms. This will provide us a truthful
+overview of the countries most affected by COVID-19 and the ones that put in 
+place appropriate policies to handle the pandemic widespread.
 \subsubsection{Preprocessing}
-This dataset contains worldwide per-country daily data for COVID-19 for a total
-of 59 columns and 68331 entries. Among others, we are interested mainly in
+This dataset contains worldwide, per-country, daily data for COVID-19 for a
+total of 59 columns and $77550$ entries. Among others, we are interested mainly
+in the following features:
 \begin{itemize}
     \item total confirmed cases;
     \item new confirmed cases;
@@ -188,7 +190,7 @@ as a result, the following preprocessing procedures were applied
 \begin{itemize}
     \item data aggregated by continents was removed;
     \item missing daily data values for countries were replaced\footnote{The
-    \texttt{scikit-learn SimpleImputer} was used to this end} with the constant
+    \texttt{scikit-learn SimpleImputer} was used to this end.} with the constant
     value $0$; this seems the most reasonable choice since these missing values
     refer to the very beginning of the pandemic; using either the mean or the
     mode results a distorted dataset;
