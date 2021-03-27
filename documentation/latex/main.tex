@@ -160,7 +160,7 @@ MiB.\\
 \\
 This dataset was used for the first part of the work: finding the characteristic
 curves of each country and grouping together countries with comparable behavior
-by means of timeseries clustering algorithms. This will provide us a truthful
+by means of time series clustering algorithms. This will provide us a truthful
 overview of the countries most affected by COVID-19 and the ones that put in 
 place appropriate policies to handle the pandemic widespread.
 \subsubsection{Preprocessing}
@@ -194,12 +194,10 @@ as a result, the following preprocessing procedures were applied
     value $0$; this seems the most reasonable choice since these missing values
     refer to the very beginning of the pandemic; using either the mean or the
     mode results a distorted dataset;
-    \item negative values were replaced with the constant value $0$ too; another
-    strategy was tried first: using the moving average with window size $k$ to
-    approximate the negative value as the average of the $k$ previous and
-    successive values; however the problem in this case is determining $k$:
-    negative values appear sequentially, at the very beginning and end of the
-    dataset.
+    \item negative values were replaced using the moving average\footnote{The
+    \texttt{pandas DataFrame.rolling} method was used to this end.} with a
+    moving window of size $15$ to approximate the negative values as the average
+    of the $7$ previous and successive values.
 \end{itemize}
 Taking into account also the fact that the daily data will mostly be used
 resampled with weekly frequency and that by visual inspection it appears that
@@ -207,14 +205,21 @@ negative values are close to zero, there is no need to further preprocess this
 dataset.
 \subsection{COVID-19 Medical Preconditions Data}
 The second part of this work focused on frequent pattern analysis in order to be
-able to find interesting pattern as far as it concerns COVID-19 patients who
+able to find interesting patterns as far as it concerns COVID-19 patients who
 had prior medical preconditions. Finding such patterns is a crucial task that
-might allow to best allocate very limited medical resources. The dataset
-required for such type of analysis was not easy to find: usually COVID-19
-datasets only contain daily values (numbers) of confirmed cases and deaths. They
-rarely come equipped with the medical preconditions of the patients. Luckily,
-the Federal government of Mexico\cite{mexico} provided such a dataset: it is
-splitted in three main files:
+might allow to best allocate very limited medical resources. The rapid global
+spread of the virus SARS-CoV-2 has provoked a spike in demand for hospital care.
+Hospital systems across the world have been over-extended, including the one
+case we are most familiar with, Northern Italy.
+As a result, decisions on how to best allocate very limited medical resources
+have come to the forefront: who to test, who to admit into hospitals, who to
+treat in an Intensive Care Unit (ICU), who to support with a ventilator.\\
+\\
+The dataset required for such type of analysis was not easy to find: usually
+COVID-19 datasets only contain daily values (numbers) of confirmed cases and
+deaths. They rarely come equipped with the medical preconditions of the
+patients. Luckily, the Federal government of Mexico\cite{mexico} provided such a
+dataset. It is splitted in three main files:
 \begin{itemize}
     \item \texttt{210206COVID19MEXICO.csv}: the main file containing, among
     others,
@@ -230,33 +235,27 @@ splitted in three main files:
     contain additional clarifications regarding each feature present in the main
     dataset file.
 \end{itemize}
-The rapid global spread of the virus SARS-CoV-2 has provoked a spike in
-demand for hospital care. Hospital systems across the world have been
-over-extended, including the one case we are most familiar with, Northern Italy.
-As a result, decisions on how to best allocate very limited medical resources
-have come to the forefront: who to test, who to admit into hospitals, who to
-treat in an Intensive Care Unit (ICU), who to support with a ventilator.
 This dataset is perfect for the objective of the analysis we are interested in
 --- develop personalized models that predict the following events:
 \begin{enumerate}
     \item hospitalization;
     \item need for ICU;
     \item need for a ventilator;
-    \item mortality;
+    \item mortality.
 \end{enumerate}
 \subsubsection{Preprocessing}
 The preprocessing required by this second dataset is completely different from
 the one required  by the first one. This is because the type of data is
 completely different. While the first dataset is primarily a sequence of
 numerical records, here we deal with categorical attributes. The main
-considerations to be made include
+considerations to be made include:
 \begin{itemize}
     \item the dataset is split into $3$ files: one with the main content, the
     remaining two files contain headers details;
     \item Spanish is the de facto national language spoken by the vast majority
     of Mexicans, all files are in Spanish;
-    \item the dataset has a size of about $754$ MiB, with a total of 40 columns
-    and 4.880.032 entries.
+    \item the dataset has a size of about $990$ MiB, with a total of 40 columns
+    and more than 4.880.032 entries.
 \end{itemize}
 The preprocessing stage included merging the 3 files into a single \texttt{.csv}
 file, in English, containing therefore patients details, medical preconditions,
@@ -269,19 +268,20 @@ required medical care and if they survived SARS-CoV-2 or not.
 \section{Analysis}
 As said in the introductory section, the analysis was carried out using data
 mining and machine learning techniques in order to answer the proposed
-questions. As we move on to build our models, we should do that by taking a very
-critical look at models. Keep in mind the aphorism "All models are wrong", often
-expanded as "All models are wrong, but some are useful". The modeller's paradox
-is even more true when crisis erupts: unfortunately, in such situations, data
-are lacking or of poor quality. What is worse is that models do not simulate the
-behaviours of citizens to stop seeking medical assistance in the case of a
-pandemic (because of fear), models do not capture the effects of sustained lock
-down as far as it concerns mental health and general social well being. Models
-can not simulate the social and economical consequences of business failures and
-economic depressions, nor do models simulate the effects of increase of violence
-and policing on cultural norms or attitudes to democracy. And also importantly,
-is that models do not translate well necessarily across different cultural and
-political boundaries.
+questions. As we move on to build our models, in this very particular case,
+working with data from a pandemic such the COVID-19, we should do that by
+\textbf{taking a very critical look at models}. Keep in mind the aphorism "All
+models are wrong", often expanded as "All models are wrong, but some are
+useful". The modeller's paradox is even more true when crisis erupts:
+unfortunately, in such situations, data are lacking or of poor quality. What is
+worse is that models do not simulate the behaviours of citizens to stop seeking
+medical assistance in the case of a pandemic (because of fear), models do not
+capture the effects of sustained lock down as far as it concerns mental health
+and general social well being. Models can not simulate the social and economical
+consequences of business failures and economic depressions, nor do models
+simulate the effects of increase of violence and policing on cultural norms or
+attitudes towards democracy. And also importantly, is that models do not
+translate well necessarily across different cultural and political boundaries.
 \subsection{Which countries have been affected the most by COVID-19?}
 To answer the very first question, we need to understand what is hidden behind
 the official numbers and charts of confirmed COVID-19 active cases and deaths.
@@ -290,13 +290,13 @@ learn from it.\\
 \\
 We are so used to watching COVID-19 numbers and charts nowadays and sometimes we
 think we might even understand how the pandemic is evolving as days goes by. For
-example, it is very common to consider the following:
+example, it is very common to consider the following plot:
 \begin{figure}[H]
     \begin{center}
         \hspace*{-0.2cm}
         \includegraphics[scale=0.32]{img/total-cases.pdf}
     \end{center}
-    \vspace{-0.2cm}
+    \vspace{-0.3cm}
     \caption{Top 15 Countries Confirmed COVID-19 Cases}
 \end{figure}
 \noindent
@@ -314,7 +314,7 @@ of the countries most affected by COVID-19:
         \hspace*{-0.2cm}
         \includegraphics[scale=0.32]{img/total-cases-per-million.pdf}
     \end{center}
-    \vspace{-0.2cm}
+    \vspace{-0.3cm}
     \caption{Top 15 Countries Confirmed COVID-19 Cases Per One Million Population}
 \end{figure}
 \noindent
@@ -348,7 +348,7 @@ resampling is needed}:
         \item countries with too many missing values (more than $150$ days) were
         removed since no interpolation technique can really be effective in such
         cases;
-        \item were few missing values were present, these were replaced using
+        \item where few missing values were present, these were replaced using
         the constant value $0$;
     \end{itemize}
     \item plotting the data with daily granularity results in a time series plot
@@ -359,7 +359,8 @@ To impute the missing values, i.e., to infer them from the known part of the
 data, an univariate imputation algorithm was used: imputes values in the
 i-th feature dimension using only non-missing values in that feature dimension.
 To this end, the \texttt{SimpleImputer} class from the \texttt{scikit-learn}
-Python package was used.\\
+Python package and the \texttt{rolling} method from the
+\texttt{pandas.DataFrame} package were used.\\
 \\
 This is the resulting time series plot for some of the countries:
 \begin{figure}[H]
@@ -367,7 +368,7 @@ This is the resulting time series plot for some of the countries:
         \hspace*{-0.3cm}
         \includegraphics[scale=0.325]{img/weekly-deaths-per-million.pdf}
     \end{center}
-    \vspace{-0.2cm}
+    \vspace{-0.3cm}
     \caption{COVID-19 Weekly Deaths Per One Million Population}
 \end{figure}
 \noindent
@@ -400,7 +401,7 @@ find?
         \hspace*{-0.3cm}
         \includegraphics[scale=0.32]{img/weekly-deaths-worldwide.pdf}
     \end{center}
-    \vspace{-0.2cm}
+    \vspace{-0.3cm}
     \caption{COVID-19 Weekly Deaths Per One Million Population Worldwide}
 \end{figure}
 \noindent
@@ -441,15 +442,15 @@ rather at its shape.
     \caption{Visual comparison of matched points based on DTW (black) and Euclidean (red) distance}
 \end{figure}
 \noindent
-Additionally two time series don't have to be equal in length what is an
-assumption required by the Euclidean distance. The Euclidean distance takes
-pairs of data points and compares them to each other. DTW calculates the
-smallest distance between all points --- this enables a one-to-many match.\\
+Additionally, the two time series don't have to be equal in length as required
+by the Euclidean distance. The Euclidean distance takes pairs of data points and
+compares them to each other. DTW calculates the smallest distance between all
+points --- this enables a one-to-many match.\\
 \\
 Two K-means clustering models were built: one using the euclidean distance and
 one using the DTW algorithm. To this end, \texttt{tslearn}, a Python package
 that provides machine learning tools for the analysis of time series, was used.
-This package builds on (and hence depends on) \texttt{scikit-learn},
+This package builds on (and hence depends on) the \texttt{scikit-learn},
 \texttt{numpy} and \texttt{scipy} libraries.\\
 \\
 First of all, the optimal number of clusters was evaluated using the mean
@@ -484,7 +485,7 @@ and the other using the dynamic time warping algorithm.
     \begin{center}
         \includegraphics[scale=0.32]{img/daily-deaths-euclidean-clusters.pdf}
     \end{center}
-    \vspace{-0.2cm}
+    \vspace{-0.3cm}
     \caption{Time series K-means Clustering Model using Euclidean distance}
 \end{figure}
 \noindent
@@ -493,22 +494,22 @@ algorithm provided by the \texttt{TimeSeriesKMeans} class of the
 \texttt{tslearn} Python package. In this model, the metric chosen to be used for
 both cluster assignment and barycenter computation is the euclidean distance:
 \begin{itemize}
-    \item the {\color{ForestGreen}green cluster} groups $138$ countries with
+    \item the {\color{ForestGreen}green cluster} groups $147$ countries with
     daily deaths close to zero;
-    \item the {\color{red}red cluster} groups $26$ countries with a huge number
-    of daily deaths, that managed to get the situation controlled for a while,
-    but are now suffering for the second wave;
-    \item the {\color{blue}blue cluster} groups $36$ countries which suffer
+    \item the {\color{blue}blue cluster} groups $39$ countries which suffer
     constantly COVID-19 deaths and where it seems the situation is getting worse
     and worse over time;
-    \item mean silhouette coefficient for all samples: $0.56$.
+    \item the {\color{red}red cluster} groups $19$ countries with a huge number
+    of daily deaths, that managed to get the situation controlled for a while,
+    but are now suffering for the second wave;
+    \item mean silhouette coefficient for all samples: $0.60$.
 \end{itemize}
 The time series K-means clustering model using the Dynamic Time Warping
 algorithm provides different clusters. As shown in figure 7,
 \begin{itemize}
     \item the {\color{ForestGreen}green cluster} groups $139$ countries;
-    \item the {\color{red}red cluster} groups $16$ countries;
-    \item the {\color{blue}blue cluster} groups $45$ countries;
+    \item the {\color{blue}blue cluster} groups $44$ countries;
+    \item the {\color{red}red cluster} groups $22$ countries;
     \item mean silhouette coefficient for all samples: $0.66$.
 \end{itemize}
 We should keep in mind that the DTW algorithm is quite CPU-intensive: as a
@@ -521,7 +522,7 @@ shown in figure 7.
     \begin{center}
         \includegraphics[scale=0.32]{img/daily-deaths-dtw-clusters.pdf}
     \end{center}
-    \vspace{-0.2cm}
+    \vspace{-0.3cm}
     \caption{Time series K-means Clustering Model using Dynamic Time Warping algorithm}
 \end{figure}
 \noindent
@@ -535,7 +536,7 @@ neighboring countries can be used as a measure of how well the algorithm
 performed:
 \begin{figure}[H]
     \begin{center}
-        \includegraphics[scale=0.9]{img/euclidean-clusters-map.png}
+        \includegraphics[scale=0.22]{img/euclidean-clusters-map.png}
     \end{center}
     \vspace{-0.2cm}
     \caption{K-means Clustering Model Worldwide Map (Euclidean Distance)}
@@ -546,7 +547,7 @@ European continent. Furthermore, countries from the blue cluster are
 concentrated in Russia, the middle east and African continent.
 \begin{figure}[H]
     \begin{center}
-        \includegraphics[scale=0.9]{img/dtw-clusters-map.png}
+        \includegraphics[scale=0.22]{img/dtw-clusters-map.png}
     \end{center}
     \vspace{-0.2cm}
     \caption{K-means Clustering Model Worldwide Map (DTW Algorithm)}

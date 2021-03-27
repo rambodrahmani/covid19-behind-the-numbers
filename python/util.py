@@ -7,6 +7,7 @@
 import csv
 import os.path
 import requests
+import threading
 import numpy as np
 import pandas as pd
 from sklearn.impute import SimpleImputer
@@ -15,9 +16,11 @@ __author__ = "Rambod Rahmani"
 __copyright__ = "Copyright (C) 2021 Rambod Rahmani"
 __license__ = "GPLv3"
 
+# Datasets paths
 HISTORICAL_DATASET_PATH = "../dataset/owid-covid-data.csv"
 PREPROCESSED_HISTORICAL_DATASET_PATH = "../dataset/preprocessed-owid-covid-data.csv"
 PRECONDITIONS_DATASET_PATH = "../dataset/datos_abiertos_covid19.gz"
+PREPROCESSED_PRECONDITIONS_DATASET_PATH = "../dataset/preprocessed-datos_abiertos_covid19.gz"
 
 ##
 # Loads and preprocesses the historical dataset .csv file.
@@ -107,7 +110,9 @@ def loadHistoricalData():
                     composedDF = pd.DataFrame(list(zip(tempDF['iso_code'].values, tempDF['continent'].values, tempDF['location'].values, tempDF['date'].values, totalCases[0].values, newCases[0].values, totalDeaths[0].values, newDeaths[0].values, totalCasesPerMillion[0].values, newCasesPerMillion[0].values, totalDeathsPerMillion[0].values, newDeathsPerMillion[0].values)), columns = historicalDF.columns)
                     imputedDF = imputedDF.append(composedDF, ignore_index = True, sort = True)
 
+			# save to file for future use
             imputedDF.to_csv(PREPROCESSED_HISTORICAL_DATASET_PATH, index = False)
+
             return imputedDF
     else:
         print("Historical dataset .csv file not found. Please run update_historical_data first.")
@@ -141,38 +146,46 @@ def printHistoricalDFInfo():
 def loadPreconditionsData():
     # check if the .csv file exists
     if os.path.isfile(PRECONDITIONS_DATASET_PATH):
-        # load preconditions dataset
-        preconditionsDF = pd.read_csv(PRECONDITIONS_DATASET_PATH)
-
-        # select features of interest
-        preconditionsDF = preconditionsDF[['FECHA_INGRESO', 'SEXO', 'EDAD', 'CLASIFICACION_FINAL', 'FECHA_DEF', 'NEUMONIA', 'EMBARAZO', 'DIABETES', 'EPOC', 'ASMA', 'INMUSUPR', 'HIPERTENSION', 'OTRA_COM', 'CARDIOVASCULAR', 'OBESIDAD', 'RENAL_CRONICA', 'TABAQUISMO', 'TIPO_PACIENTE', 'INTUBADO', 'UCI']]
-
-        # translate features names
-        preconditionsDF.columns = ['recovery_date', 'sex', 'age', 'covid19', 'deceased', 'pneumonia', 'pregnancy', 'diabetes', 'copd', 'asthma', 'immunosuppression', 'hypertension', 'other_diseases', 'cardiovascular', 'obesity', 'chronic_kidney_failure', 'smoking', 'hospitalization', 'intubation', 'icu']
-
-        # map numerical values to categorical values
-        preconditionsDF['sex'] = preconditionsDF['sex'].map({1: 'female', 2: 'male'})
-        preconditionsDF['covid19'] = preconditionsDF['covid19'].map({1: True, 2: True, 3: True, 4: False, 5: False, 6: False, 7: False})
-        preconditionsDF['deceased'] = preconditionsDF['deceased'].map(lambda x: x < '9999-01-01')
-        preconditionsDF['pneumonia'] = preconditionsDF['pneumonia'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['pregnancy'] = preconditionsDF['pregnancy'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['diabetes'] = preconditionsDF['diabetes'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['copd'] = preconditionsDF['copd'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['asthma'] = preconditionsDF['asthma'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['immunosuppression'] = preconditionsDF['immunosuppression'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['hypertension'] = preconditionsDF['hypertension'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['other_diseases'] = preconditionsDF['other_diseases'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['cardiovascular'] = preconditionsDF['cardiovascular'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['obesity'] = preconditionsDF['obesity'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['chronic_kidney_failure'] = preconditionsDF['chronic_kidney_failure'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['smoking'] = preconditionsDF['smoking'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['hospitalization'] = preconditionsDF['hospitalization'].map({1: False, 2: True, 99: False})
-        preconditionsDF['intubation'] = preconditionsDF['intubation'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-        preconditionsDF['icu'] = preconditionsDF['icu'].map({1: True, 2: False, 97: False, 98: False, 99: False})
-
-        preconditionsDF = preconditionsDF.fillna(False)
-
-        return preconditionsDF;
+    	# check if the preprocessed .csv file exists
+        if os.path.isfile(PREPROCESSED_PRECONDITIONS_DATASET_PATH):
+            preconditionsDF = pd.read_csv(PREPROCESSED_PRECONDITIONS_DATASET_PATH)
+            return preconditionsDF
+        else:
+        	# load preconditions dataset
+        	preconditionsDF = pd.read_csv(PRECONDITIONS_DATASET_PATH)
+	
+        	# select features of interest
+        	preconditionsDF = preconditionsDF[['FECHA_INGRESO', 'SEXO', 'EDAD', 'CLASIFICACION_FINAL', 'FECHA_DEF', 'NEUMONIA', 'EMBARAZO', 'DIABETES', 'EPOC', 'ASMA', 'INMUSUPR', 'HIPERTENSION', 'OTRA_COM', 'CARDIOVASCULAR', 'OBESIDAD', 'RENAL_CRONICA', 'TABAQUISMO', 'TIPO_PACIENTE', 'INTUBADO', 'UCI']]
+	
+        	# translate features names
+        	preconditionsDF.columns = ['recovery_date', 'sex', 'age', 'covid19', 'deceased', 'pneumonia', 'pregnancy', 'diabetes', 'copd', 'asthma', 'immunosuppression', 'hypertension', 'other_diseases', 'cardiovascular', 'obesity', 'chronic_kidney_failure', 'smoking', 'hospitalization', 'intubation', 'icu']
+	
+        	# map numerical values to categorical values
+        	preconditionsDF['sex'] = preconditionsDF['sex'].map({1: 'female', 2: 'male'})
+        	preconditionsDF['covid19'] = preconditionsDF['covid19'].map({1: True, 2: True, 3: True, 4: False, 5: False, 6: False, 7: False})
+        	preconditionsDF['deceased'] = preconditionsDF['deceased'].map(lambda x: x != '9999-99-99')
+        	preconditionsDF['pneumonia'] = preconditionsDF['pneumonia'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['pregnancy'] = preconditionsDF['pregnancy'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['diabetes'] = preconditionsDF['diabetes'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['copd'] = preconditionsDF['copd'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['asthma'] = preconditionsDF['asthma'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['immunosuppression'] = preconditionsDF['immunosuppression'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['hypertension'] = preconditionsDF['hypertension'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['other_diseases'] = preconditionsDF['other_diseases'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['cardiovascular'] = preconditionsDF['cardiovascular'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['obesity'] = preconditionsDF['obesity'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['chronic_kidney_failure'] = preconditionsDF['chronic_kidney_failure'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['smoking'] = preconditionsDF['smoking'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['hospitalization'] = preconditionsDF['hospitalization'].map({1: False, 2: True, 99: False})
+        	preconditionsDF['intubation'] = preconditionsDF['intubation'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+        	preconditionsDF['icu'] = preconditionsDF['icu'].map({1: True, 2: False, 97: False, 98: False, 99: False})
+	
+        	preconditionsDF = preconditionsDF.fillna(False)
+	
+        	# save to file for future use
+        	preconditionsDF.to_csv(PREPROCESSED_PRECONDITIONS_DATASET_PATH, index = False, compression = "gzip")
+	
+        	return preconditionsDF;
     else:
         print("Preconditions dataset .csv file not found.")
 

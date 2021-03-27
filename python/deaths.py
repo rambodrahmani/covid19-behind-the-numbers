@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 ################################################################################
-# Randomly plots countries COVID-19 daily deaths (per one million population)
+# Plots random countries COVID-19 daily deaths (per one million population)
 # time series chart.
 ################################################################################
 
@@ -96,8 +96,8 @@ def clustersPlot():
         
         # K-means time series clustering parameters
         nClusters = 3
-        clustersColors = ['blue', 'red', 'green']
-        clustersNames = ['Blue Cluster', 'Red Cluster', 'Green Cluster']
+        clustersColors = ['blue', 'green', 'red']
+        clustersNames = ['Blue Cluster', 'Green Cluster', 'Red Cluster']
 
         # random seed used to initialize the centers
         seed = 1
@@ -165,8 +165,8 @@ def clustersPlot():
         
         # K-means time series clustering parameters
         nClusters = 3
-        clustersColors = ['blue', 'red', 'green']
-        clustersNames = ['Blue Cluster', 'Red Cluster', 'Green Cluster']
+        clustersColors = ['blue', 'green', 'red']
+        clustersNames = ['Blue Cluster', 'Green Cluster', 'Red Cluster']
 
         # random seed used to initialize the centers
         seed = 1
