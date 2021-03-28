@@ -42,8 +42,6 @@ def loadHistoricalData():
             historicalDF = historicalDF[~historicalDF.location.str.contains("Africa")]
             historicalDF = historicalDF[~historicalDF.location.str.contains("Europe")]
             historicalDF = historicalDF[~historicalDF.location.str.contains("America")]
-            historicalDF = historicalDF[~historicalDF.location.str.contains("Australia")]
-            historicalDF = historicalDF[~historicalDF.location.str.contains("Antarctica")]
             historicalDF = historicalDF[~historicalDF.location.str.contains("Europe Union")]
             historicalDF = historicalDF[~historicalDF.location.str.contains("North America")]
             historicalDF = historicalDF[~historicalDF.location.str.contains("South America")]
@@ -162,6 +160,10 @@ def loadPreconditionsData():
 	
         	# map numerical values to categorical values
         	preconditionsDF['sex'] = preconditionsDF['sex'].map({1: 'female', 2: 'male'})
+        	preconditionsDF.loc[preconditionsDF['sex'] == 'female', 'female'] = True
+        	preconditionsDF.loc[preconditionsDF['sex'] == 'male', 'female'] = False
+        	preconditionsDF.loc[preconditionsDF['sex'] == 'female', 'male'] = False
+        	preconditionsDF.loc[preconditionsDF['sex'] == 'male', 'male'] = True
         	preconditionsDF['covid19'] = preconditionsDF['covid19'].map({1: True, 2: True, 3: True, 4: False, 5: False, 6: False, 7: False})
         	preconditionsDF['deceased'] = preconditionsDF['deceased'].map(lambda x: x != '9999-99-99')
         	preconditionsDF['pneumonia'] = preconditionsDF['pneumonia'].map({1: True, 2: False, 97: False, 98: False, 99: False})
@@ -184,7 +186,7 @@ def loadPreconditionsData():
 	
         	# save to file for future use
         	preconditionsDF.to_csv(PREPROCESSED_PRECONDITIONS_DATASET_PATH, index = False, compression = "gzip")
-	
+
         	return preconditionsDF;
     else:
         print("Preconditions dataset .csv file not found.")

@@ -96,8 +96,8 @@ def clustersPlot():
         
         # K-means time series clustering parameters
         nClusters = 3
-        clustersColors = ['blue', 'green', 'red']
-        clustersNames = ['Blue Cluster', 'Green Cluster', 'Red Cluster']
+        clustersColors = ['green', 'blue', 'red']
+        clustersNames = ['Green Cluster', 'Blue Cluster', 'Red Cluster']
 
         # random seed used to initialize the centers
         seed = 1
@@ -137,7 +137,7 @@ def clustersPlot():
         ########################################################################
         data = dict(type = 'choropleth',
                     locations = clusters.index.to_list(), 
-                    colorscale = [(0,"green"), (0.5,"red"), (1,"blue")],
+                    colorscale = [(0,"green"), (0.5,"blue"), (1,"red")],
                     locationmode = 'country names',
                     z = clusters.values,
                     text = clusters.index.to_list(),
@@ -165,8 +165,8 @@ def clustersPlot():
         
         # K-means time series clustering parameters
         nClusters = 3
-        clustersColors = ['blue', 'green', 'red']
-        clustersNames = ['Blue Cluster', 'Green Cluster', 'Red Cluster']
+        clustersColors = ['green', 'blue', 'red']
+        clustersNames = ['Green Cluster', 'Blue Cluster', 'Red Cluster']
 
         # random seed used to initialize the centers
         seed = 1
@@ -206,7 +206,7 @@ def clustersPlot():
         ########################################################################
         data = dict(type = 'choropleth',
                     locations = clusters.index.to_list(), 
-                    colorscale = [(0,"green"), (0.5,"red"), (1,"blue")],
+                    colorscale = [(0,"green"), (0.5,"blue"), (1,"red")],
                     locationmode = 'country names',
                     z = clusters.values,
                     text = clusters.index.to_list(),
