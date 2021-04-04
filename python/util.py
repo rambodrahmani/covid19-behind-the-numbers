@@ -66,42 +66,42 @@ def loadHistoricalData():
                 totalCases = tempDF[['total_cases']].copy()
                 totalCases[totalCases <= 0] = np.nan
                 totalCases = pd.DataFrame(constantImputer.fit_transform(totalCases))
-                totalCases = totalCases.rolling(15, center = True, min_periods = 1).mean()
+                totalCases = totalCases.rolling(10, center = True, min_periods = 1).mean()
 
                 newCases = tempDF[['new_cases']].copy()
                 newCases[newCases <= 0] = np.nan
                 newCases = pd.DataFrame(constantImputer.fit_transform(newCases))
-                newCases = newCases.rolling(15, center = True, min_periods = 1).mean()
+                newCases = newCases.rolling(10, center = True, min_periods = 1).mean()
 
                 totalDeaths = tempDF[['total_deaths']].copy()
                 totalDeaths[totalDeaths <= 0] = np.nan
                 totalDeaths = pd.DataFrame(constantImputer.fit_transform(totalDeaths))
-                totalDeaths = totalDeaths.rolling(15, center = True, min_periods = 1).mean()
+                totalDeaths = totalDeaths.rolling(10, center = True, min_periods = 1).mean()
 
                 newDeaths = tempDF[['new_deaths']].copy()
                 newDeaths[newDeaths <= 0] = np.nan
                 newDeaths = pd.DataFrame(constantImputer.fit_transform(newDeaths))
-                newDeaths = newDeaths.rolling(15, center = True, min_periods = 1).mean()
+                newDeaths = newDeaths.rolling(10, center = True, min_periods = 1).mean()
 
                 totalCasesPerMillion = tempDF[['total_cases_per_million']].copy()
                 totalCasesPerMillion[totalCasesPerMillion <= 0] = np.nan
                 totalCasesPerMillion = pd.DataFrame(constantImputer.fit_transform(totalCasesPerMillion))
-                totalCasesPerMillion = totalCasesPerMillion.rolling(15, center = True, min_periods = 1).mean()
+                totalCasesPerMillion = totalCasesPerMillion.rolling(10, center = True, min_periods = 1).mean()
 
                 newCasesPerMillion = tempDF[['new_cases_per_million']].copy()
                 newCasesPerMillion[newCasesPerMillion <= 0] = np.nan
                 newCasesPerMillion = pd.DataFrame(constantImputer.fit_transform(newCasesPerMillion))
-                newCasesPerMillion = newCasesPerMillion.rolling(15, center = True, min_periods = 1).mean()
+                newCasesPerMillion = newCasesPerMillion.rolling(10, center = True, min_periods = 1).mean()
 
                 totalDeathsPerMillion = tempDF[['total_deaths_per_million']].copy()
                 totalDeathsPerMillion[totalDeathsPerMillion <= 0] = np.nan
                 totalDeathsPerMillion = pd.DataFrame(constantImputer.fit_transform(totalDeathsPerMillion))
-                totalDeathsPerMillion = totalDeathsPerMillion.rolling(15, center = True, min_periods = 1).mean()
+                totalDeathsPerMillion = totalDeathsPerMillion.rolling(10, center = True, min_periods = 1).mean()
 
                 newDeathsPerMillion = tempDF[['new_deaths_per_million']].copy()
                 newDeathsPerMillion[newDeathsPerMillion <= 0] = np.nan
                 newDeathsPerMillion = pd.DataFrame(constantImputer.fit_transform(newDeathsPerMillion))
-                newDeathsPerMillion = newDeathsPerMillion.rolling(15, center = True, min_periods = 1).mean()
+                newDeathsPerMillion = newDeathsPerMillion.rolling(10, center = True, min_periods = 1).mean()
 
                 # check all values are available for this location
                 if not totalCases.empty:

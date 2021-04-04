@@ -104,8 +104,7 @@ def clustersPlot():
         np.random.seed(seed)
 
         # extract training set and convert to time series dataset
-        historicalDFTrain = historicalDF.rolling(7, axis = 1, min_periods = 1).mean().fillna(0)
-        historicalDFTrain = to_time_series_dataset(historicalDFTrain.copy())
+        historicalDFTrain = to_time_series_dataset(historicalDF.copy())
 
         # time series K-means clustering Model using Euclidean distance
         print('K-Means Model using Euclidean distance')
@@ -142,7 +141,7 @@ def clustersPlot():
                     z = clusters.values,
                     text = clusters.index.to_list(),
                     colorbar = {'title':'Clusters'})
-        layout = dict(title = 'Countries COVID-19 Clusters',
+        layout = dict(title = 'Countries COVID-19 Clusters - K-means clustering Model using Euclidean distance',
                       geo = dict(showframe = False, projection = {'type': 'equirectangular'}))
         fig = choromap3 = go.Figure(data = [data], layout = layout)
         fig.update_layout(autosize = False, width = 2200, height = 2200,)
@@ -173,8 +172,7 @@ def clustersPlot():
         np.random.seed(seed)
 
         # extract training set and convert to time series dataset
-        historicalDFTrain = historicalDF.rolling(7, axis = 1, min_periods = 1).mean().fillna(0)
-        historicalDFTrain = to_time_series_dataset(historicalDFTrain.copy())
+        historicalDFTrain = to_time_series_dataset(historicalDF.copy())
 
         # time series K-means clustering Model using Dynamic Time Warping
         print('K-Means Model using Dynamic Time Warping')
@@ -211,7 +209,7 @@ def clustersPlot():
                     z = clusters.values,
                     text = clusters.index.to_list(),
                     colorbar = {'title':'Clusters'})
-        layout = dict(title = 'Countries COVID-19 Clusters',
+        layout = dict(title = 'Countries COVID-19 Clusters - K-means clustering Model using Dynamic Time Warping',
                       geo = dict(showframe = False, projection = {'type': 'equirectangular'}))
         fig = choromap3 = go.Figure(data = [data], layout = layout)
         fig.update_layout(autosize = False, width = 2200, height = 2200,)

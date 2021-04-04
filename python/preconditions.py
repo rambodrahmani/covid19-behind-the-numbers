@@ -33,7 +33,5 @@ def buildPredictiveModels():
         fpgrowthRules = association_rules(fpgrowthFrequentItemsets, metric="confidence", min_threshold=0.7)
         print(fpgrowthRules.to_string())
 
-        # compute fpmax
-        fpmaxFrequentItemsets = fpmax(preconditionsDF, min_support=0.02, use_colnames=True)
-        fpmaxRules = association_rules(fpmaxFrequentItemsets, metric="confidence", min_threshold=0.7)
-        print(fpmaxRules.to_string())
+		# compute all confidence, max confidence, Kulc and cosine measures as
+		# well as the imbalance ratio for the association rules
