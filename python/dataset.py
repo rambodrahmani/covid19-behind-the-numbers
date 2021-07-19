@@ -173,7 +173,7 @@ class Dataset:
 				preconditionsDF = preconditionsDF.fillna(False)
 
 				# store preprocessed dataframe for future use
-				preconditionsDF.to_csv(PREPROCESSED_PRECONDITIONS_DATASET_PATH, index = False, compression = "gzip")
+				preconditionsDF.to_csv(PREPROCESSED_PRECONDITIONS_DATASET_PATH, index = False, compression = "zip")
 
 				return preconditionsDF;
 		else:
