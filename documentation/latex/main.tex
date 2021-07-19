@@ -229,7 +229,7 @@ dataset. It is splitted in three main files:
         \item if the patient required hospitalization, intubation or Intensive
         care unit (ICU);
         \item if the patient was affected by Pneumonia, Diabetes, Asthma,
-        Hypertension, Cardiovascular disease (CVD), etc\dots;
+        Hypertension, Cardiovascular disease (CVD), Immunosuppression, etc\dots;
         \item death date (only for those patients who actually died).
     \end{itemize}
     \item \texttt{201128\_Catalogos.xlsx}, \texttt{201128\_Descriptores.xlsx}:
@@ -260,7 +260,28 @@ considerations to be made include:
 \end{itemize}
 The preprocessing stage included merging the 3 files into a single \texttt{.csv}
 file, in English, containing therefore patients details, medical preconditions,
-required medical care and if they survived SARS-CoV-2 or not.
+required medical care and if they survived SARS-CoV-2 or not.\\
+Additionally, in the original dataset the categorical variables related to
+medical preconditions include additional information which are not useful for
+the frequent pattern mining process. This table summarizes the binary encoding
+adopted:
+\begin{center}
+\begin{tabular}{ |c|c|c| }
+\hline
+\textbf{Numeric Value} & \textbf{Meaning} & \textbf{Binary Encoding} \\
+\hline
+1 & Yes & True \\
+\hline
+2 & No & False \\
+\hline
+97 & Not applicable & False \\
+\hline
+98 & Unknown & False \\
+\hline
+99 & Not Specified & False \\
+\hline
+\end{tabular}
+\end{center}
 
 %-------------------------------------------------------------------------------
 % Section: Analysis
