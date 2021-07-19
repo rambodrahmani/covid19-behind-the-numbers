@@ -14,8 +14,8 @@ __license__ = "GPLv3"
 # Datasets paths
 HISTORICAL_DATASET_PATH = "../dataset/owid-covid-data.csv"
 PREPROCESSED_HISTORICAL_DATASET_PATH = "../dataset/preprocessed-owid-covid-data.csv"
-PRECONDITIONS_DATASET_PATH = "../dataset/datos_abiertos_covid19.gz"
-PREPROCESSED_PRECONDITIONS_DATASET_PATH = "../dataset/preprocessed-datos_abiertos_covid19.gz"
+PRECONDITIONS_DATASET_PATH = "../dataset/datos_abiertos_covid19.zip"
+PREPROCESSED_PRECONDITIONS_DATASET_PATH = "../dataset/preprocessed-datos_abiertos_covid19.zip"
 
 ##
 # Dataset class.

@@ -54,7 +54,7 @@
 % Title
 %-------------------------------------------------------------------------------
 \begin{center}
-	\huge{\bfseries{\scshape{COVID-19: Behind The Numbers}}}\\
+	\huge{\bfseries{COVID-19: Behind The Numbers}}\\
 	\vspace{1.0cm}
 	\large{Data Mining and Machine Learning Project}\\
 	\vspace{0.2cm}
@@ -97,24 +97,25 @@ COVID-19.}\\
 At the beginning of 2020, a new virus started spreading around in the capital of
 Central China's Hubei province: the city we all came to know as Wuhan. As it
 turned out, this was the start of a world-changing event with overwhelming
-extent: Coronavirus Disease 2019 (COVID-19). After the first wave of the virus
-has passed over the entire world, while the number of deaths by the second wave
-of COVID-19 infections is increasing, the aim of this work is to address the
-following questions:
+extent: Coronavirus Disease 2019 (COVID-19). After the first and the second
+waves of the virus have passed over the entire world, while the number of deaths
+by COVID-19 infections is decreasing as a result of the vaccination campaigns,
+the aim of this work is to address the following questions:
 \begin{itemize}
 	\item \textbf{Which countries have been affected the most by COVID-19?}
 	\item \textbf{Is it possible to build personalized predictive models for
 		symptomatic COVID-19 patients based on health preconditions?}
 \end{itemize}
 In order to fully answer these questions, first of all a reliable and big enough
-dataset is needed. Second, Data Mining and Machine Learning techniques can be
+dataset is needed. Second, data mining and machine learning techniques can be
 applied in order to obtain statistically significant results that could help
-address the proposed questions. In the following pages the described work and
-the resulting Python software is presented. The software architecture is
-presented in the very last section in order to focus primarily on the dataset
-retrieval and preprocessing, and on the analysis techniques and results.\\
+address the proposed questions. In the following pages the development of the
+project and the resulting Python software are presented. The software
+architecture is presented in the very last section in order to focus primarily
+on the dataset retrieval and preprocessing, and on the analysis techniques and
+results.\\
 \\
-All the files related to this work are published in this GitHub repository:
+All the files related to this work are available in this GitHub repository:
 \url{https://github.com/rambodrahmani/covid19-behind-the-numbers}
 
 %-------------------------------------------------------------------------------
@@ -125,8 +126,8 @@ All the files related to this work are published in this GitHub repository:
 Two different datasets were used:
 \begin{itemize}
     \item the data on confirmed cases and confirmed deaths is updated daily and
-    is published by \textbf{Johns Hopkins University}, the best available global
-    dataset on the pandemic;
+    is published by the \textbf{Johns Hopkins University}; this is the best
+    available dataset on the pandemic at global level;
     \item as far as it concerns medical preconditions of COVID-19 patients,
     the most detailed dataset I was able to retrieve is the one provided by
     \textbf{The Federal government of Mexico}.
@@ -155,7 +156,7 @@ provides the JHU CSSE data already
 merged\footnote{\url{https://ourworldindata.org/coronavirus-data}} and updated
 to the latest second as a single \texttt{.csv} file. The choice was made to use
 this \texttt{.csv} file as dataset.\\
-The dataset file is named \texttt{owid-covid-data.csv} with a size of $16.5$
+The dataset file is named \texttt{owid-covid-data.csv} with a size of $26.2$
 MiB.\\
 \\
 This dataset was used for the first part of the work: finding the characteristic
@@ -165,7 +166,7 @@ overview of the countries most affected by COVID-19 and the ones that put in
 place appropriate policies to handle the pandemic widespread.
 \subsubsection{Preprocessing}
 This dataset contains worldwide, per-country, daily data for COVID-19 for a
-total of 59 columns and $77550$ entries. Among others, we are interested mainly
+total of 59 columns and $103349$ entries. Among others, we are interested mainly
 in the following features:
 \begin{itemize}
     \item total confirmed cases;
@@ -183,7 +184,7 @@ preprocessing are:
     \item it contains redundant data, e.g. values aggregated by continent (Asia,
     Africa, Europe, America, North America etc\dots);
     \item some of the daily data values are missing (specially for the very
-    initial days of the pandemic, i.e. from 2020-01-01 to 2020-03-01);
+    initial months of the pandemic, i.e. from 2020-01-01 to 2020-03-01);
     \item some of the daily data values are negative;
 \end{itemize}
 as a result, the following preprocessing procedures were applied

@@ -128,7 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-## Core latex/pdflatex auxiliary files:
+# Core latex/pdflatex auxiliary files:
 *.aux
 *.log
 *.out
@@ -137,3 +137,6 @@ dmypy.json
 *.bcf
 *.blg
 *.xml
+
+# big files
+datos_abiertos_covid19.zip
