@@ -26,4 +26,9 @@ $ python3 -m pip install -U h5py pandas matplotlib scikit-learn llvmlite tslearn
 Simply run
 ```bash
 $ python3 main.py
+Welcome to the COVID-19 Toolbox.
+
+Type help or ? to list commands.
+
+>
 ```
