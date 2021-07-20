@@ -12,7 +12,7 @@
 \documentclass[11pt,a4paper]{article}
 
 \usepackage[a4paper, portrait, margin=1.1in]{geometry}
-\usepackage[dvipsnames]{xcolor}
+\usepackage[dvipsnames,table]{xcolor}
 \usepackage[linktoc=none]{hyperref}
 \hypersetup{
 	colorlinks=true,
@@ -178,6 +178,9 @@ in the following features:
     \item total deaths per one million population;
     \item new deaths per one million population.
 \end{itemize}
+\textbf{Each country is represented by different time series with daily
+granularity. One for each of the listed attributes.}\\
+\\
 The main considerations to be made about this dataset as far as it concerns data
 preprocessing are:
 \begin{itemize}
@@ -211,7 +214,7 @@ had prior medical preconditions. Finding such patterns is a crucial task that
 might allow to best allocate very limited medical resources. The rapid global
 spread of the virus SARS-CoV-2 has provoked a spike in demand for hospital care.
 Hospital systems across the world have been over-extended, including the one
-case we are most familiar with, Northern Italy.
+case we are most familiar with, Northern Italy.\\
 As a result, decisions on how to best allocate very limited medical resources
 have come to the forefront: who to test, who to admit into hospitals, who to
 treat in an Intensive Care Unit (ICU), who to support with a ventilator.\\
@@ -255,7 +258,7 @@ considerations to be made include:
     remaining two files contain headers details;
     \item Spanish is the de facto national language spoken by the vast majority
     of Mexicans, all files are in Spanish;
-    \item the dataset has a size of about $1.2$ G`iB, with a total of 40 columns
+    \item the dataset has a size of about $1.2$ GiB, with a total of 40 columns
     and more than $7.950.230$ entries.
 \end{itemize}
 The preprocessing stage included merging the 3 files into a single \texttt{.csv}
@@ -370,8 +373,10 @@ resampling is needed}:
         \item countries with too many missing values (more than $150$ days) were
         removed since no interpolation technique can really be effective in such
         cases;
-        \item where few missing values were present, these were replaced using
-        the constant value $0$;
+        \item where few missing values were present for the initial months of
+        the pandemic, these were replaced using the constant value $0$;
+        \item missing and negative values in the middle of the time series were
+        replaced using the moving window average;
     \end{itemize}
     \item plotting the data with daily granularity results in a time series plot
     which is not smooth and hard to read; the data was therefore resampled with
@@ -399,25 +404,34 @@ countries have been hit by the virus. In addition, observing the plot one can
 immediately point out that
 \begin{itemize}
     \item some countries suffered more the first wave, some others the second
-    and some both;
+    and some others the third wave; some countries suffered all of them;
     \item countries such as {\color{ts_italy}Italy} and
     {\color{ts_belgium}Belgium} were devastated by the first wave and reacted
-    by completely shutting down social life; yet they are not doing better with
-    the second wave;
+    by completely shutting down social life; yet they did not do better with the
+    second wave; finally, the vaccination campaign seems to have helped them
+    control the pandemic (both in {\color{ts_italy}Italy} and
+    in {\color{ts_belgium}Belgium} almost $50\%$ of the population has received
+    the first vaccine dose);
     \item countries such as {\color{ts_austria}Austria} and
     {\color{ts_germany}Germany} have not been hit hard by the first COVID-19
     wave; these states reacted fast and slowed down social life right at the
     beginning; as a result, the number of deaths went back to almost zero; yet
-    they are suffering from the second wave;
+    they suffered from the second wave and got the situation under control using
+    vaccines;
     \item countries such as {\color{ts_unitedstates}United States} and
-    {\color{cyan}Brazil} have a daily death toll with an almost constant
-    trend.
+    {\color{cyan}Brazil} had a daily death toll with an almost constant
+    trend during the first and second waves; while the situation has drastically
+    improved in the {\color{ts_unitedstates}United States} thanks to the
+    vaccines ($50\%$ of the population has received
+    the first vaccine dose), in {\color{cyan}Brazil} the number of daily deaths
+    are increasing ($16\%$ of the population has received the first vaccine
+    dose);
 \end{itemize}
 If we extend the same reasoning to all the countries, figure 4 shows the weekly
 deaths per one million population for 200 countries, from Afghanistan to
 Zimbabwe. It is humanly impossible to extract any useful information from such a
-plot. However, in this mess, how many different characteristic curves can we
-find?
+plot. \textbf{However, in this mess, how many different characteristic curves
+can we find?}
 \begin{figure}[H]
     \begin{center}
         \hspace*{-0.3cm}
@@ -464,7 +478,7 @@ rather at its shape.
     \caption{Visual comparison of matched points based on DTW (black) and Euclidean (red) distance}
 \end{figure}
 \noindent
-Additionally, the two time series don't have to be equal in length as required
+Additionally, the two time series do not have to be equal in length as required
 by the Euclidean distance. The Euclidean distance takes pairs of data points and
 compares them to each other. DTW calculates the smallest distance between all
 points --- this enables a one-to-many match.\\
@@ -479,28 +493,35 @@ First of all, the optimal number of clusters was evaluated using the mean
 silhouette coefficient for all samples. The different silhouette values obtained
 for the K-Means Model are listed below:
 \begin{itemize}
-    \item 2 Clusters silhouette:
+    \item $2$ Clusters silhouette:
     \begin{itemize}
-        \item Euclidean distance: $0.63$ --- Dynamic Time Warping: $0.71$
+        \item Euclidean distance: $0.606$ --- Dynamic Time Warping: $0.689$
     \end{itemize}
-    \item 3 Clusters silhouette:
+    \item $3$ Clusters silhouette:
     \begin{itemize}
-        \item Euclidean distance: $0.56$ --- Dynamic Time Warping: $0.66$
+        \item Euclidean distance: $0.585$ --- Dynamic Time Warping: $0.627$
     \end{itemize}
-    \item 4 Clusters silhouette:
+    \item $4$ Clusters silhouette:
     \begin{itemize}
-        \item Euclidean distance: $0.58$ --- Dynamic Time Warping: $0.66$
+        \item Euclidean distance: $0.582$ --- Dynamic Time Warping: $0.620$
     \end{itemize}
-    \item 5 Clusters silhouette:
+    \item $5$ Clusters silhouette:
     \begin{itemize}
-        \item Euclidean distance: $0.59$ --- Dynamic Time Warping: $0.63$
+        \item Euclidean distance: $0.597$ --- Dynamic Time Warping: $0.619$
     \end{itemize}
 \end{itemize}
 The best value for the mean silhouette coefficient is obtained with only $2$
 clusters. However, taking into account our knowledge of the phenomenon, we
-expect to find $3$ clusters of countries: those hardly hit by both the first and
-the second wave, those that have been hit by either the first or the second
-wave, and those suffering COVID-19 deaths constantly. Two K-means models with
+expect to find $3$ clusters of countries:
+\begin{enumerate}
+    \item those hardly hit by both the first and the second wave, that
+    implemented a proper vaccination campaign;
+    \item those that have been hit by either the first or the second wave, that
+    implemented a proper vaccination campaign;
+    \item and those suffering COVID-19 deaths constantly, that have not the
+    resources to implement an adequate vaccination campaign.
+\end{enumerate}
+Two K-means models with
 3 clusters were therefore evaluated: one trained using the euclidean distance
 and the other using the dynamic time warping algorithm.
 \begin{figure}[H]
@@ -516,23 +537,22 @@ algorithm provided by the \texttt{TimeSeriesKMeans} class of the
 \texttt{tslearn} Python package. In this model, the metric chosen to be used for
 both cluster assignment and barycenter computation is the euclidean distance:
 \begin{itemize}
-    \item the {\color{ForestGreen}green cluster} groups $147$ countries with
-    daily deaths close to zero;
-    \item the {\color{blue}blue cluster} groups $39$ countries which suffer
-    constantly COVID-19 deaths and where it seems the situation is getting worse
-    and worse over time;
-    \item the {\color{red}red cluster} groups $19$ countries with a huge number
-    of daily deaths, that managed to get the situation controlled for a while,
-    but are now suffering for the second wave;
-    \item mean silhouette coefficient for all samples: $0.60$.
+    \item the {\color{ForestGreen}green cluster} groups $167$ countries with
+    a low number of daily deaths (close to zero);
+    \item the {\color{blue}blue cluster} groups $11$ countries which suffered
+    either the first or the second SARS-CoV-2 wave;
+    \item the {\color{red}red cluster} groups $44$ countries with a huge number
+    of daily deaths, that managed to get the situation under control for a while
+    after the first wave, but suffered for the second wave as well;
+    \item mean silhouette coefficient for all samples: $0.58$.
 \end{itemize}
 The time series K-means clustering model using the Dynamic Time Warping
 algorithm provides different clusters. As shown in figure 7,
 \begin{itemize}
-    \item the {\color{ForestGreen}green cluster} groups $139$ countries;
-    \item the {\color{blue}blue cluster} groups $44$ countries;
-    \item the {\color{red}red cluster} groups $22$ countries;
-    \item mean silhouette coefficient for all samples: $0.66$.
+    \item the {\color{ForestGreen}green cluster} groups $140$ countries;
+    \item the {\color{blue}blue cluster} groups $28$ countries;
+    \item the {\color{red}red cluster} groups $54$ countries;
+    \item mean silhouette coefficient for all samples: $0.62$.
 \end{itemize}
 We should keep in mind that the DTW algorithm is quite CPU-intensive: as a
 matter of fact, with $50$ iterations, the same number used to obtain the model
@@ -548,9 +568,21 @@ shown in figure 7.
     \caption{Time series K-means Clustering Model using Dynamic Time Warping algorithm}
 \end{figure}
 \noindent
-To compare the two models, as there is no ground truth when dealing with
-clustering problems, I represented the clusters obtained by the two models on
-the world map. Surprisingly enough, as shown in figure 8 and in figure 9,
+Simply looking at the characteristic curves of each of the clusters identified
+in the two proposed models, it looks like that the DTW-based K-Means clustering
+performed a better grouping.\\
+\\
+Keeping in mind that
+\begin{enumerate}
+    \item the tools available in the \texttt{tslearn} Python package for working
+    with time series clustering are quite limited;
+    \item as a result the silhouette coefficient was used at the beginning in
+    absence of other more robust clustering tendency statistical indicator;
+    \item there is no real ground truth when dealing with clustering problems in
+    general;
+\end{enumerate}
+to compare the two models, I represented the clusters obtained by the two models
+on the world map. Surprisingly enough, as shown in figure 8 and in figure 9,
 those groups form local clusters on the world map as well. The nature of the
 phenomenon we are analysing, the spread of the SARS-CoV-2 pandemic, tells us
 that how well this local clusters are grouped in the world map, in terms of
@@ -561,32 +593,103 @@ performed:
         \includegraphics[scale=0.22]{img/euclidean-clusters-map.png}
     \end{center}
     \vspace{-0.2cm}
-    \caption{K-means Clustering Model Worldwide Map (Euclidean Distance)}
+    \caption{K-means Clustering Model World Map (Euclidean Distance)}
 \end{figure}
 \noindent
-A quick look at the map below shows that the red cluster is located on the
-European continent. Furthermore, countries from the blue cluster are
-concentrated in Russia, the middle east and African continent.
+Given the nature of the phenomenon under analysis, it is very hard to say which
+is better. In both cases, the fact that African and Middle East countries are
+classified as {\color{ForestGreen}green} can be explained by the lack of
+reliable data from such countries.
 \begin{figure}[H]
     \begin{center}
         \includegraphics[scale=0.22]{img/dtw-clusters-map.png}
     \end{center}
     \vspace{-0.2cm}
-    \caption{K-means Clustering Model Worldwide Map (DTW Algorithm)}
+    \caption{K-means Clustering Model World Map (DTW Algorithm)}
 \end{figure}
 \noindent
 One important observation to be made is that changing from the euclidean
-distance to the DTW algorithm, the US moves from the {\color{red}red cluster} to
-the {\color{ForestGreen}green cluster}. Also, the Russian Federation moves from
-the {\color{ForestGreen}green cluster} to the {\color{blue}blue cluster}. This
-is understandable if we take into account that the US has a population of
-$328.2$ million while the Russian Federation has a population of $144.4$
-million.\\
+distance to the DTW algorithm, Canada moves from the
+{\color{ForestGreen}green cluster} to the {\color{red}red cluster}. Although the
+fact that {\color{ForestGreen}green countries} mainly cover the African
+continent and the Middle East, {\color{red}red countries} are found in Europe
+and North America and {\color{blue}blue countries} concentrate in South America
+is a good indicator, I believe that it is not easy to model a complex phenomenon
+such as the COVID-19 just by using $3$ clusters based on the count of weekly
+deaths per one million population.\\
 \\
-Just by observing the two world maps presented, it goes without saying that the
-DTW Model performed better.
+We also have to take into account that the clustering results are also
+influenced by vaccinations campaigns. Such campaign (where actually active) is
+affected by geopolitics as well: politics and international relations play a
+major role.
 \subsection{Personalized predictive models for symptomatic COVID-19 patients}
-
+Currently, the world is facing a health and economic crisis due to the spread of
+the virus SARS-CoV-2 which causes a disease referred to as COVID-19. By the end
+of April 2020, the virus has spread to over $191$ million people worldwide and
+has killed over $4,1$ million. During this pandemic, governments and hospitals
+have struggled to allocate scarce resources, including tests, treatment in
+intensive care units (ICUs) and ventilators.\\
+\\
+The rapid global spread of the virus SARS-CoV-2 has provoked a spike in demand
+for hospital care. Hospital systems across the world have been over-extended,
+including in Northern Italy, Ecuador, and New York City, and many other systems
+face similar challenges. As a result, decisions on how to best allocate very
+limited medical resources have come to the forefront. Specifically, under
+consideration are decisions on who to test, who to admit into hospitals, who to
+treat in an Intensive Care Unit (ICU), and who to support with a ventilator.
+Given today's ability to gather, share, analyze and process data, personalized
+predictive models based on demographics and information regarding prior
+conditions can be used to
+\begin{enumerate}
+    \item help decision-makers allocate limited resources;
+    \item advise individuals how to better protect themselves given their risk
+    profile;
+    \item using risk profiles to inform decisions on who should be tested (for
+    the virus and/or antibodies) and at which frequency;
+    \item providing more accurate estimates of who is more likely to be
+    hospitalized and the type of care they may need;
+    \item informing plans for staffing, resources, and prioritizing the level of
+    care in extremely resource-constrained settings.
+    \item to develop personalized models that predict the following events:
+        \begin{enumerate}
+            \item hospitalization;
+            \item mortality;
+            \item need for ICU
+            \item need for a ventilator.
+        \end{enumerate}
+\end{enumerate}
+Equally importantly, as societies adapt to the pandemic, predictive models can
+\begin{enumerate}
+    \item assess individual risk so that social distancing measures can
+    transition from "blanket" to more targeted (e.g., deciding who can return to
+    work, who is advised to stay at home, who should be tested, etc.);
+    \item direct policy decisions on who should receive priority for
+    vaccination, which will be critical as initial vaccine production may not
+    suffice to vaccinate everybody.
+\end{enumerate}
+\clearpage
+\noindent
+Using the FPGrowth (Frequent Pattern Growth) algorithm allowed to mine the
+association rules listed in the following table ordered by support value:
+\rowcolors{2}{gray!15}{white}
+\begin{center}
+\begin{tabular}{ | c | c | c | c | c | }
+    \rowcolor{gray!50}
+    \hline
+    Antecedents & Consequents & Support & Confidence & Lift\\
+    \hline
+    Pneumonia & COVID-19, Hospitalization & 0.116372 & 0.859268 & 4.797504\\
+    \hline
+    Pneumonia, COVID-19 & Hospitalization & 0.116372 & 0.859268 & 4.797504\\
+    \hline
+    Pneumonia, Hypertension & Hospitalization & 0.045297 & 0.913733 & 5.101596\\
+    \hline
+    Pneumonia, Hypertension, COVID-19 & Hospitalization & 0.045297 & 0.913733 & 5.101596\\
+    \hline
+    Pneumonia, Hypertension & COVID-19, Hospitalization & 0.045297 & 0.913733 & 5.101596\\
+    \hline
+\end{tabular}
+\end{center}
 %-------------------------------------------------------------------------------
 % Section: Conclusion
 %-------------------------------------------------------------------------------

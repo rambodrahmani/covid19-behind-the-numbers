@@ -3,9 +3,9 @@
 import cmd
 import sys
 from dataset import Dataset
-from preconditions import Preconditions
 from confirmed_cases import ConfirmedCases
 from confirmed_deaths import ConfirmedDeaths
+from predictive_models import PredictiveModels
 from countries_clustering import CountriesClustering
 
 __author__ = 'Rambod Rahmani'
@@ -23,7 +23,7 @@ class App(cmd.Cmd):
     confirmedCases = ConfirmedCases()
     confirmedDeaths = ConfirmedDeaths()
     countriesClustering = CountriesClustering()
-    preconditions = Preconditions()
+    predictiveModels = PredictiveModels()
 
     def do_update_historical_ds(self, arg):
         'Update COVID-19 historical dataset to the latest available version.'
@@ -52,15 +52,18 @@ class App(cmd.Cmd):
     def do_plot_weekly_deaths_all_countries(self, arg):
         'Plots COVID-19 weekly deaths per one million population time series of all countries.'
         self.confirmedDeaths.allCountriesPerMilionPlot(self.dataset.loadHistoricalDataset())
-        
-    def do_daily_deaths_clusters(self, arg):
-        'Plots COVID-19 daily deaths per one million population time series clusters.'
+
+    def do_timeseries_clustering_euclidean(self, arg):
+        'Plots COVID-19 daily deaths per one million population time series euclidean-based clusters.'
         self.countriesClustering.euclideanDistance(self.dataset.loadHistoricalDataset())
+
+    def do_timeseries_clustering_dtw(self, arg):
+        'Plots COVID-19 daily deaths per one million population time series DTW-based clusters.'
         self.countriesClustering.dynamicTimeWarping(self.dataset.loadHistoricalDataset())
 
     def do_personalized_predictive_models(self, arg):
         'Builds personalized predictive models for symptomatic COVID-19 patients using medical preconditions.'
-        preconditions.buildPredictiveModels()
+        self.predictiveModels.buildPredictiveModels(self.dataset.loadPreconditionsDataset())
 
     def do_exit(self, arg):
         'Exit COVID-19 Toolbox.'
