@@ -692,24 +692,20 @@ Equally importantly, as societies adapt to the pandemic, predictive models can
     vaccination, which will be critical as initial vaccine production may not
     suffice to vaccinate everybody.
 \end{enumerate}
-Using the FPGrowth (Frequent Pattern Growth) algorithm allowed to mine the
-association rules listed in the following table ordered by support value:
+Using the FPGrowth (Frequent Pattern Growth) algorithm\footnote{The
+\texttt{frequent\_patterns} module of the \texttt{mlxtend} Python package was
+used to this end.} allowed to mine the association rules listed in the following
+table ordered by support value:
 \begin{center}
 \hspace*{-1cm}
-\begin{tabular}{ | c | c | c | c | c | }
+\begin{tabular}{ | c | c | c | c | c | c | c | }
     \rowcolor{gray!50}
     \hline
-    Antecedents & Consequents & Support & Confidence & Lift\\
+    Antecedents & Consequents & Support & Confidence & Lift & Kulczynski & IR\\
     \hline
-    Pneumonia & COVID-19, Hospitalization & 0.116372 & 0.859268 & 4.797504\\
+    Pneumonia & COVID-19, Hospitalization & 0.116372 & 0.859268 & 4.797504 & 0.0 & 0.0\\
     \hline
-    Pneumonia, COVID-19 & Hospitalization & 0.116372 & 0.859268 & 4.797504\\
-    \hline
-    Pneumonia, Hypertension & Hospitalization & 0.045297 & 0.913733 & 5.101596\\
-    \hline
-    Pneumonia, Hypertension, COVID-19 & Hospitalization & 0.045297 & 0.913733 & 5.101596\\
-    \hline
-    Pneumonia, Hypertension & COVID-19, Hospitalization & 0.045297 & 0.913733 & 5.101596\\
+    Pneumonia & COVID-19, Hospitalization & 0.116372 & 0.859268 & 4.797504 & 0.0 & 0.0\\
     \hline
 \end{tabular}
 \end{center}
@@ -724,7 +720,41 @@ association rules listed in the following table ordered by support value:
 %-------------------------------------------------------------------------------
 \newpage
 \section{Software Architecture}
-
+\subsection{Python Packages}
+\subsection{Kulczynski measure and Imbalance Ratio}
+The \texttt{frequent\_patterns} module of the \texttt{mlxtend} Python package
+used to mine the association rules, provides the following scoring metrics:
+"antecedent support", "consequent support", "support", "confidence", "lift",
+"leverage" and "conviction".\\
+\\
+The Kulczynski measure was computed using the provided metrics according to the
+following reasoning:
+$$
+    Kulc(A, B) = \frac{1}{2}\left(P(A|B) + P(B|A)\right) =
+$$
+\vspace*{0.1cm}
+$$
+    = \frac{1}{2}\left(\frac{support(B \cup A)}{support(B)} +
+    \frac{support(A \cup B)}{support(A)}\right) =
+$$
+\vspace*{0.1cm}
+$$
+    = \frac{1}{2}\left(\frac{"support"}{"consequent\ support"} +
+    \frac{"support"}{"antecedent\ support"}\right).
+$$
+\\
+\\
+The Imbalance Ratio was computed using the provided metrics according to the
+following reasoning:
+$$
+    IR(A, B) = \frac{|support(A) - support(B)|}{support(A) - support(B)
+    + support(A \cup B)} =
+$$
+\vspace*{0.1cm}
+$$
+    = \frac{|"antecedent\ support" - "consequent\ support"|}
+    {"antecedent\ support" - "consequent\ support" + "support"}.
+$$
 %-------------------------------------------------------------------------------
 % Bibliography
 %-------------------------------------------------------------------------------
