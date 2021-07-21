@@ -10,7 +10,7 @@ __license__ = "GPLv3"
 ##
 # ConfirmedDeaths class.
 #
-# Contains all functions related to plotting Confirmed COVID-19 Cases.
+# Contains all the functions related to plotting Confirmed COVID-19 cases.
 ##
 class ConfirmedDeaths:
 	def perMilionPlot(self, historicalDF):

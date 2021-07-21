@@ -20,8 +20,8 @@ PREPROCESSED_PRECONDITIONS_DATASET_PATH = "../dataset/preprocessed-datos_abierto
 ##
 # Dataset class.
 #
-# Contains all functions related to loading, preprocessing, saving and printing
-# the different datasets.
+# Contains all the functions related to loading, preprocessing, saving and
+# printing the content of the different datasets.
 ##
 class Dataset:
 	def loadHistoricalDataset(self):

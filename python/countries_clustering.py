@@ -16,8 +16,8 @@ __license__ = "GPLv3"
 ##
 # CountriesClustering class.
 #
-# Contains all functions related to computing and plotting countries clustering
-# based on COVID-19 confirmed deaths.
+# Contains all the functions related to computing and plotting countries
+# K-Means clustering based on COVID-19 confirmed deaths.
 ##
 class CountriesClustering:
 	def euclideanDistance(self, historicalDF):

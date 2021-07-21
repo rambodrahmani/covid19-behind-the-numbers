@@ -30,39 +30,39 @@ class App(cmd.Cmd):
         self.dataset.updateHistoricalDataset()
 
     def do_print_historical_ds_info(self, arg):
-        'Prints COVID-19 historical dataset info.'
+        'Print COVID-19 historical dataset info.'
         self.dataset.printHistoricalDatasetInfo()
 
     def do_print_preconditions_ds_info(self, arg):
-        'Prints COVID-19 preconditions dataset info.'
+        'Print COVID-19 preconditions dataset info.'
         self.dataset.printPreconditionsDatasetInfo()
 
     def do_plot_total_cases(self, arg):
-        'Plots COVID-19 total confirmed cases histogram of the TOP 15 countries.'
+        'Plot COVID-19 total confirmed cases histogram of the TOP 15 countries.'
         self.confirmedCases.plot(self.dataset.loadHistoricalDataset())
         
     def do_plot_total_cases_per_million(self, arg):
-        'Plots COVID-19 total confirmed cases per one million population histogram of the TOP 15 countries.'
+        'Plot COVID-19 total confirmed cases per one million population histogram of the TOP 15 countries.'
         self.confirmedCases.perMilionPlot(self.dataset.loadHistoricalDataset())
 
     def do_plot_weekly_deaths_per_million(self, arg):
-        'Plots COVID-19 weekly deaths per one million population time series of random countries.'
+        'Plot COVID-19 weekly deaths per one million population time series of random countries.'
         self.confirmedDeaths.perMilionPlot(self.dataset.loadHistoricalDataset())
         
     def do_plot_weekly_deaths_all_countries(self, arg):
-        'Plots COVID-19 weekly deaths per one million population time series of all countries.'
+        'Plot COVID-19 weekly deaths per one million population time series of all countries.'
         self.confirmedDeaths.allCountriesPerMilionPlot(self.dataset.loadHistoricalDataset())
 
     def do_timeseries_clustering_euclidean(self, arg):
-        'Plots COVID-19 daily deaths per one million population time series euclidean-based clusters.'
+        'Plot COVID-19 daily deaths per one million population time series euclidean-based K-Means clusters.'
         self.countriesClustering.euclideanDistance(self.dataset.loadHistoricalDataset())
 
     def do_timeseries_clustering_dtw(self, arg):
-        'Plots COVID-19 daily deaths per one million population time series DTW-based clusters.'
+        'Plot COVID-19 daily deaths per one million population time series DTW-based K-Means clusters.'
         self.countriesClustering.dynamicTimeWarping(self.dataset.loadHistoricalDataset())
 
     def do_personalized_predictive_models(self, arg):
-        'Builds personalized predictive models for symptomatic COVID-19 patients using medical preconditions.'
+        'Build personalized predictive models for symptomatic COVID-19 patients using medical preconditions.'
         self.predictiveModels.buildPredictiveModels(self.dataset.loadPreconditionsDataset())
 
     def do_exit(self, arg):

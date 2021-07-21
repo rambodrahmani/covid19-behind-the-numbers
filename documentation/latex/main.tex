@@ -491,7 +491,7 @@ This package builds on (and hence depends on) the \texttt{scikit-learn},
 \\
 First of all, the optimal number of clusters was evaluated using the mean
 silhouette coefficient for all samples. The different silhouette values obtained
-for the K-Means Model are listed below:
+for the K-means Model are listed below:
 \begin{itemize}
     \item $2$ Clusters silhouette:
     \begin{itemize}
@@ -521,9 +521,8 @@ expect to find $3$ clusters of countries:
     \item and those suffering COVID-19 deaths constantly, that have not the
     resources to implement an adequate vaccination campaign.
 \end{enumerate}
-Two K-means models with
-3 clusters were therefore evaluated: one trained using the euclidean distance
-and the other using the dynamic time warping algorithm.
+Two K-means models with $3$ clusters were therefore evaluated: one trained using
+the euclidean distance and the other using the dynamic time warping algorithm.
 \begin{figure}[H]
     \begin{center}
         \includegraphics[scale=0.32]{img/daily-deaths-euclidean-clusters.pdf}
@@ -569,7 +568,7 @@ shown in figure 7.
 \end{figure}
 \noindent
 Simply looking at the characteristic curves of each of the clusters identified
-in the two proposed models, it looks like that the DTW-based K-Means clustering
+in the two proposed models, it looks like that the DTW-based K-means clustering
 performed a better grouping.\\
 \\
 Keeping in mind that
@@ -720,7 +719,110 @@ table ordered by support value:
 %-------------------------------------------------------------------------------
 \newpage
 \section{Software Architecture}
+The subsequent analysis results were implemented as functionalities of a small
+Python3 software:
+\begin{lstlisting}[language=bash,frame=single]
+$ python3 main.py 
+Welcome to the COVID-19 Toolbox.
+
+Type help or ? to list commands.
+
+> ?
+
+Documented commands (type help <topic>):
+========================================
+exit                              plot_weekly_deaths_per_million
+help                              print_historical_ds_info
+personalized_predictive_models    print_preconditions_ds_info
+plot_total_cases                  timeseries_clustering_dtw
+plot_total_cases_per_million      timeseries_clustering_euclidean
+plot_weekly_deaths_all_countries  update_historical_ds
+\end{lstlisting}
+The following is a brief description of each of the available commands:
+\begin{itemize}
+    \item \texttt{update\_historical\_ds}: updates COVID-19 historical dataset to
+    the latest available version;
+    \item \texttt{print\_historical\_ds\_info}: prints COVID-19 historical dataset
+    info;
+    \item \texttt{print\_preconditions\_ds\_info}: prints COVID-19 preconditions
+    dataset info;
+    \item \texttt{plot\_total\_cases}: plot COVID-19 total confirmed cases
+    histogram of the TOP 15 countries;
+    \item \texttt{plot\_total\_cases\_per\_million}: plot COVID-19 total confirmed
+    cases per one million population histogram of the TOP 15 countries;
+    \item \texttt{plot\_weekly\_deaths\_per\_million}: plot COVID-19 weekly deaths
+    per one million population time series of random countries;
+    \item \texttt{plot\_weekly\_deaths\_all\_countries}: plot COVID-19 weekly deaths
+    per one million population time series of all countries;
+    \item \texttt{timeseries\_clustering\_euclidean}: plot COVID-19 daily deaths
+    per one million population time series euclidean-based K-means clusters;
+    \item \texttt{timeseries\_clustering\_dtw}: plot COVID-19 daily deaths per one
+    million population time series DTW-based K-means clusters;
+    \item \texttt{personalized\_predictive\_models}: build personalized predictive
+    models for symptomatic COVID-19 patients using medical preconditions;
+    \item \texttt{exit}: exit COVID-19 Toolbox.
+\end{itemize}
+\subsection{Class Diagram}
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[scale=0.8]{img/class_diagram.pdf}
+    \end{center}
+    \caption{Python Class Diagram}
+\end{figure}
+The following is a brief description of each of the classes:
+\begin{itemize}
+    \item \texttt{App}: application entry point; it implements the command line
+    menu logic using an instance of the \texttt{Cmd} Python3 class;
+    \item \texttt{Cmd}: this Python3 class provides a simple framework for
+    writing line-oriented command interpreters. These are often useful for test
+    harnesses, administrative tools, and prototypes that will later be wrapped
+    in a more sophisticated interface;
+    \item \texttt{ConfirmedCases}: implements all the functions related to
+    plotting Confirmed COVID-19 cases;
+    \item \texttt{ConfirmedDeaths}: implements all the functions related to
+    plotting Confirmed COVID-19 cases;
+    \item \texttt{CountriesClustering}: implements all the functions related to
+    computing and plotting countries K-means clustering based on COVID-19
+    confirmed deaths;
+    \item \texttt{Dataset}: implements all the functions related to loading,
+    preprocessing, saving and printing the content of the different datasets;
+    \item \texttt{PredictiveModels}: implements all the functions related to
+    loading, preprocessing, saving and printing the content of the different
+    datasets.
+\end{itemize}
 \subsection{Python Packages}
+The following Python3 packages and libraries were used in the development:
+\begin{itemize}
+    \item \texttt{matplotlib.pyplot}: is a state-based interface to
+    \texttt{matplotlib}; it provides a MATLAB-like way of plotting; mainly
+    intended for interactive plots and simple cases of programmatic plot
+    generation;
+    \item \texttt{pandas}: is a fast, powerful, flexible and easy to use open
+    source data analysis and manipulation tool, built on top of the Python
+    programming language;
+    \item \texttt{numpy}: is the fundamental package for scientific computing in
+    Python; it is a Python library that provides a multidimensional array
+    object, various derived objects (such as masked arrays and matrices), and an
+    assortment of routines for fast operations on arrays, including
+    mathematical, logical, basic statistical operations, random simulation and
+    much more;
+    \item \texttt{plotly}: is a high-level, declarative charting library;
+    \item \texttt{plotly.graph\_objs}: the figures created, manipulated and
+    rendered by the \texttt{plotly} Python library are represented by tree-like
+    data structures which are automatically serialized to JSON for rendering by
+    the \texttt{Plotly.js} JavaScript library.
+    \item \texttt{sklearn}: Scikit-learn (formerly \texttt{scikits.learn}) is a
+    free software machine learning library for the Python programming language;
+    \item \texttt{tslearn}: is a Python package that provides machine learning
+    tools for the analysis of time series;
+    \item \texttt{tslearn.utils}: is a which module includes various time
+    series conversion utilities;
+    \item \texttt{tslearn.clustering}: K-means clustering for time-series data;
+    \item \texttt{mlxtend}: Mlxtend (machine learning extensions) is a Python
+    library of useful tools for the day-to-day data science tasks;
+    \item \texttt{mlxtend.frequent\_patterns}: this module contains the Apriori
+    and FPGrowth algorithm implementations.
+\end{itemize}
 \subsection{Kulczynski measure and Imbalance Ratio}
 The \texttt{frequent\_patterns} module of the \texttt{mlxtend} Python package
 used to mine the association rules, provides the following scoring metrics:

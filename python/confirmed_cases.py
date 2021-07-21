@@ -9,7 +9,7 @@ __license__ = "GPLv3"
 ##
 # ConfirmedCases class.
 #
-# Contains all functions related to plotting Confirmed COVID-19 Cases.
+# Contains all the functions related to plotting Confirmed COVID-19 cases.
 ##
 class ConfirmedCases:
 	def plot(self, historicalDF):

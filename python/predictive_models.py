@@ -7,6 +7,12 @@ __author__ = "Rambod Rahmani"
 __copyright__ = "Copyright (C) 2021 Rambod Rahmani"
 __license__ = "GPLv3"
 
+##
+# PredictiveModels class.
+#
+# Contains all the functions related to computing and printing associations
+# rules based on the preconditions dataset.
+##
 class PredictiveModels:
 	def buildPredictiveModels(self, preconditionsDF):
 		if not preconditionsDF is None:
