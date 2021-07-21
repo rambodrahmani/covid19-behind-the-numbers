@@ -584,7 +584,7 @@ Keeping in mind that
 to compare the two models, I represented the clusters obtained by the two models
 on the world map. Surprisingly enough, as shown in figure 8 and in figure 9,
 those groups form local clusters on the world map as well. The nature of the
-phenomenon we are analysing, the spread of the SARS-CoV-2 pandemic, tells us
+phenomenon we are analyzing, the spread of the SARS-CoV-2 pandemic, tells us
 that how well this local clusters are grouped in the world map, in terms of
 neighboring countries can be used as a measure of how well the algorithm
 performed:
@@ -597,9 +597,11 @@ performed:
 \end{figure}
 \noindent
 Given the nature of the phenomenon under analysis, it is very hard to say which
-is better. In both cases, the fact that African and Middle East countries are
-classified as {\color{ForestGreen}green} can be explained by the lack of
-reliable data from such countries.
+is better. One important observation to be made is that changing from the
+euclidean distance to the DTW algorithm, Canada moves from the
+{\color{ForestGreen}green cluster} to the {\color{red}red cluster}. Also Russia
+moved from the {\color{ForestGreen}green cluster} to the {\color{blue}blue
+cluster}.
 \begin{figure}[H]
     \begin{center}
         \includegraphics[scale=0.22]{img/dtw-clusters-map.png}
@@ -608,18 +610,41 @@ reliable data from such countries.
     \caption{K-means Clustering Model World Map (DTW Algorithm)}
 \end{figure}
 \noindent
-One important observation to be made is that changing from the euclidean
-distance to the DTW algorithm, Canada moves from the
-{\color{ForestGreen}green cluster} to the {\color{red}red cluster}. Although the
-fact that {\color{ForestGreen}green countries} mainly cover the African
-continent and the Middle East, {\color{red}red countries} are found in Europe
-and North America and {\color{blue}blue countries} concentrate in South America
-is a good indicator, I believe that it is not easy to model a complex phenomenon
-such as the COVID-19 just by using $3$ clusters based on the count of weekly
-deaths per one million population.\\
+\begin{itemize}
+    \item The {\color{ForestGreen}green cluster} (countries) corresponds to a
+    two-wave profile, with the first peak at around Day $140$, and values
+    reaching $7$ cases per $100,000$ of the population. The second wave started
+    around Day $240$ and seems not to have peaked yet at Day $250$. These are
+    also countries which started an adequate vaccination campaign in order to
+    prevent a third wave: on average, almost $60\%$ of the population has
+    received the second dose of the COVID-19 vaccine;
+    \item The {\color{blue}blue cluster} groups countries which had a
+    daily death toll with an almost constant trend during the first and second
+    waves and did not succeed in running reactive vaccination campaign: on
+    average, almost $20\%$ of the population has received the second dose of the
+    COVID-19 vaccine;
+    \item The {\color{red}red cluster} groups African and Middle East countries
+    for which concern grows over third wave of infections. The number of deaths
+    recorded for the past week has risen by more than $40\%$ compared with the
+    previous week, according to the World Health Organization (WHO): on average,
+    less than $10\%$ of the population has received the second dose of the
+    COVID-19 vaccine.
+\end{itemize}
+Also, some \textbf{outliers} can be identified with reference to this map:
+\begin{itemize}
+    \item Lebanon, Oman, Nepal, Kyrgyzstan, Tunisia, Botswana and Namibia which
+    are classified as {\color{ForestGreen}green countries} but should be part
+    of the {\color{red}red counties}: this is highly related to the fact that
+    the data provided by such countries might no be reliable;
+    \item Israel which is the country with the one of the highest percentages
+    of vaccinated citizens and is classified as a {\color{red}red country}.
+\end{itemize}
+In conclusion, I believe that it is not easy to model a complex phenomenon such
+as the COVID-19 just by using $3$ clusters based on the count of weekly deaths
+per one million population.\\
 \\
 We also have to take into account that the clustering results are also
-influenced by vaccinations campaigns. Such campaign (where actually active) is
+influenced by vaccinations campaigns. Such campaigns (where actually active) are
 affected by geopolitics as well: politics and international relations play a
 major role.
 \subsection{Personalized predictive models for symptomatic COVID-19 patients}
@@ -667,12 +692,10 @@ Equally importantly, as societies adapt to the pandemic, predictive models can
     vaccination, which will be critical as initial vaccine production may not
     suffice to vaccinate everybody.
 \end{enumerate}
-\clearpage
-\noindent
 Using the FPGrowth (Frequent Pattern Growth) algorithm allowed to mine the
 association rules listed in the following table ordered by support value:
-\rowcolors{2}{gray!15}{white}
 \begin{center}
+\hspace*{-1cm}
 \begin{tabular}{ | c | c | c | c | c | }
     \rowcolor{gray!50}
     \hline
