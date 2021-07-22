@@ -694,26 +694,125 @@ Equally importantly, as societies adapt to the pandemic, predictive models can
 Using the FPGrowth (Frequent Pattern Growth) algorithm\footnote{The
 \texttt{frequent\_patterns} module of the \texttt{mlxtend} Python package was
 used to this end.} allowed to mine the association rules listed in the following
-table ordered by support value:
+table:
 \begin{center}
-\hspace*{-1cm}
+\hspace*{-2.4cm}
+\scriptsize
 \begin{tabular}{ | c | c | c | c | c | c | c | }
     \rowcolor{gray!50}
     \hline
     Antecedents & Consequents & Support & Confidence & Lift & Kulczynski & IR\\
     \hline
-    Pneumonia & COVID-19, Hospitalization & 0.116372 & 0.859268 & 4.797504 & 0.0 & 0.0\\
+    Pneumonia, COVID-19 & Hospitalization & 0.116372 & 0.859268 & 4.797504 & 0.754502 & 0.220397\\
     \hline
-    Pneumonia & COVID-19, Hospitalization & 0.116372 & 0.859268 & 4.797504 & 0.0 & 0.0\\
+    COVID-19, Hospitalization, Male, Pneumonia & Deceased & 0.037308 & 0.530218 & 5.965878 & 0.475001 & 0.151815\\
+    \hline
+    Diabetes, COVID-19, Pneumonia & Hospitalization, Deceased & 0.022379 & 0.528984 & 6.502767 & 0.402042 & 0.385513\\
+    \hline
+    Diabetes, COVID-19, Hospitalization & Deceased & 0.030282 & 0.530857 & 5.973066 & 0.435789 & 0.275278\\
+    \hline
+    COVID-19, Hypertension, Pneumonia & Hospitalization, Deceased & 0.026695 & 0.538491 & 6.619639 & 0.433326 & 0.304851\\
+    \hline
+    COVID-19, Hospitalization, Pneumonia & Deceased & 0.059607 & 0.512212 & 5.763281 & 0.591449 & 0.188803\\
+    \hline
+    Hypertension, Pneumonia, COVID-19 & Hospitalization & 0.045297 & 0.913733 & 5.101596 & {\color{red}0.583320} & {\color{red}0.706351}\\
+    \hline
+    Pneumonia, Obesity & COVID-19 & 0.029450 & 1.000000 & 1.000000 & {\color{red}0.514725} & {\color{red}0.970550}\\
+    \hline
+    Pneumonia, Obesity, COVID-19 & Hospitalization & 0.026055 & 0.884730 & 4.939665 & {\color{red}0.515102} & {\color{red}0.820030}\\
+    \hline
+    Hypertension, Pneumonia, Obesity & COVID-19 & 0.013829 & 1.000000 & 1.000000 & {\color{red}0.506915} & {\color{red}0.986171}\\
+    \hline
+    Hypertension, Obesity, COVID-19, Pneumonia & Hospitalization & 0.012595 & 0.910779 & 5.085103 & {\color{red}0.490551} & {\color{red}0.916474}\\
+    \hline
+    Diabetes & COVID-19 & 0.125690 & 1.000000 & 1.000000 & {\color{red}0.562845} & {\color{red}0.874310}\\
+    \hline
+    Hypertension, Diabetes & COVID-19 & 0.068139 & 1.000000 & 1.000000 & {\color{red}0.534070} & {\color{red}0.931861}\\
+    \hline
+    Diabetes, Pneumonia & COVID-19 & 0.042305 & 1.000000 & 1.000000 & {\color{red}0.521153} & {\color{red}0.957695}\\
+    \hline
+    Hypertension, Pneumonia, Diabetes & COVID-19 & 0.025994 & 1.000000 & 1.000000 & {\color{red}0.512997} & {\color{red}0.974006}\\
+    \hline
+    Female, COVID-19, Diabetes, Hypertension, Pneumonia & Hospitalization & 0.011169 & 0.921561 & 5.145301 & {\color{red}0.491961} & {\color{red}0.927408}\\
+    \hline
+    Male, COVID-19, Diabetes, Hypertension, Pneumonia & Hospitalization & 0.012838 & 0.925325 & 5.166313 & {\color{red}0.498501} & {\color{red}0.917232}\\
+    \hline
+    COVID-19, Male, Intubation, Hospitalization, Pneumonia & deceased & 0.010835 & 0.843887 & 9.495208 & {\color{red}0.482901} & {\color{red}0.836664}\\
     \hline
 \end{tabular}
 \end{center}
+The association rules listed were computed on a dataset with more than
+$7.950.230$ entries. Many other association rules were found: to be precise
+$1011$ association rules were mined with a minimum support of $0.01$ and a
+confidence level of $0.5$. Many association rules included also the need for
+Intensive Care Unit (ICU), intubation, Chronic kidney diseases and
+cardiovascular diseases (CVD). Although all of these association rules are very
+interesting and might provide the predictive models we are attempting to
+construct, most of them are affect by a high value of the \textbf{imbalance
+ratio} (IR). For such "balanced" skewness, it could be fair to treat such
+correlations as neutral, as the value of the \textbf{Kulczynski measure} does,
+and in the meantime indicate the skewness using the imbalance ration.\\
+\\
+One of the most interesting results was that none of the association rules
+included \textbf{smoking}. As a matter of fact, after some research, it came
+out that a number of observational studies found an inverse relationship between
+smoking and severe acute respiratory syndrome Coronavirus 2 (SARS-CoV-2)
+infection (Coronavirus Disease 2019 (COVID-19)):
+\begin{enumerate}
+    \item Nations with high smoking rate have low SARS-CoV-2 infection and low
+    COVID-19 mortality rate -- G. Landoni, A. Zangrillo, C. Faustini, M. Di
+    Piazza -- IRCCS San Raffaele Scientific Institute -- November 10th, 2020.
+    \item Wenzl, T., Smoking and COVID-19 - A review of studies suggesting a
+    protective effect of smoking against COVID-19, EUR 30373 EN, Publications
+    Office of the European Union, Luxembourg, 2020.
+    \item Wenzl, T., Smoking and COVID-19 – Did we overlook representativeness,
+    TOBACCO INDUCED DISEASES, ISSN 1617-9625, 18 (89), 2020, p. 1-2, JRC122417.
+\end{enumerate}
+The finding that smoking is not associated with SARS-CoV-2 infection contradicts
+earlier studies which found that smokers are more vulnerable to infections in
+general and to respiratory infections in particular. Aside from the
+methodological issues in these studies, there are more reasons why hospital data
+are not suitable for determining the risk of SARS-CoV-2 infection among smokers.
+First, many critically ill COVID-19 patients have severe comorbidities that may
+exclude them from being admitted to a hospital or intensive care unit. This may,
+for example, apply to patients with serious cardiovascular and lung diseases,
+which are often the result of long-term smoking. Second, many smokers have
+already died of smoking-related illnesses (far) before they reach the age of the
+average COVID-19 hospital inpatient (around 68 years). And the final and most
+important reason is that hospital data are collected cross-sectionally (i.e.
+determining risk factor and disease at the same time). In epidemiology,
+cross-sectional studies are the weakest form of observational studies. The
+highest achievable outcome in cross-sectional research is to find a correlation,
+not causation. Only cohort studies of sufficient size, in which a group of
+patients is followed over a longer period of time, would be able to determine
+whether smokers are actually protected against SARS-CoV-2 infection or not.
+
 %-------------------------------------------------------------------------------
 % Section: Conclusion
 %-------------------------------------------------------------------------------
 \newpage
 \section{Conclusion}
-
+A suitable metric for the impact of COVID-19 which allows comparing across
+different countries was discussed. Focusing on the normalized number of deaths
+offsets the testing-rate bias. Besides, I would like to note, there remains
+socioeconomic factors such as access to the healthcare system or its quality.
+Additionally, also international political factors should be taken into account
+now that vaccination campaigns might result in a turning point in the fight
+against SARS-CoV-2 infections spread. I have not considered those effects here.
+A clustering algorithm helped us to group countries into three main
+characteristic clusters. I consider a positive result the fact that those
+clusters also form geographically grouping countries when project on the world
+map.\\
+\\
+Frequent pattern mining as a mean of building personalized predictive models for
+symptomatic COVID-19 patients did not provide the results I was hoping for.
+This mainly because most of the interesting association rules are affected by
+a high imbalance ratio. I strongly believe that building a classifier model
+could produce better results. Yet, I consider a positive result the unexpected
+finding of the great absentee in the associations rules, smoking. As previously
+discussed, this might not be a discovery backed by enough scientific proofs, yet
+it is good that the same finding was obtained by different publications released
+over the last year.
 %-------------------------------------------------------------------------------
 % Section: Software Architecture
 %-------------------------------------------------------------------------------
@@ -849,13 +948,13 @@ $$
 The Imbalance Ratio was computed using the provided metrics according to the
 following reasoning:
 $$
-    IR(A, B) = \frac{|support(A) - support(B)|}{support(A) - support(B)
-    + support(A \cup B)} =
+    IR(A, B) = \frac{|support(A) - support(B)|}{support(A) + support(B)
+    - support(A \cup B)} =
 $$
 \vspace*{0.1cm}
 $$
     = \frac{|"antecedent\ support" - "consequent\ support"|}
-    {"antecedent\ support" - "consequent\ support" + "support"}.
+    {"antecedent\ support" + "consequent\ support" - "support"}.
 $$
 %-------------------------------------------------------------------------------
 % Bibliography

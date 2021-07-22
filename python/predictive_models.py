@@ -25,7 +25,7 @@ class PredictiveModels:
 			# compute apriori
 			aprioriStartTime = time.time()
 			aprioriFrequentItemsets = apriori(preconditionsDF, min_support = 0.01, use_colnames = True)
-			aprioriAssociationRules = association_rules(aprioriFrequentItemsets, metric = "confidence", min_threshold = 0.7)
+			aprioriAssociationRules = association_rules(aprioriFrequentItemsets, metric = "confidence", min_threshold = 0.5)
 			aprioriComputationTime = (time.time() - aprioriStartTime)
 			aprioriAssociationRulesCount = len(aprioriAssociationRules.index)
 
@@ -44,7 +44,7 @@ class PredictiveModels:
 			# compute fpgrowth
 			fpgrowthStartTime = time.time()
 			fpgrowthFrequentItemsets = fpgrowth(preconditionsDF, min_support = 0.01, use_colnames = True)
-			fpgrowthAssociationRules = association_rules(fpgrowthFrequentItemsets, metric = "confidence", min_threshold = 0.7)
+			fpgrowthAssociationRules = association_rules(fpgrowthFrequentItemsets, metric = "confidence", min_threshold = 0.5)
 			fpgrowthComputationTime = (time.time() - fpgrowthStartTime)
 			fpgrowthAssociationRulesCount = len(fpgrowthAssociationRules.index)
 
@@ -58,7 +58,7 @@ class PredictiveModels:
 			# print fpgrowth association rules
 			print(fpgrowthAssociationRules)
 			print(f"--- {fpgrowthAssociationRulesCount} Association Rules computed in {fpgrowthComputationTime} seconds ---\n")
-			print(fpgrowthAssociationRules.to_string() + "\n\n")
+			print(fpgrowthAssociationRules[fpgrowthAssociationRules['imbalance ratio'] < 0.4].to_string() + "\n\n")
 
 	def computeKulczynski(self, support, antecedent_support, consequent_support):
 		return (1/2)*((support/consequent_support) + (support/antecedent_support))
