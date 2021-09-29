@@ -1,9 +1,3 @@
-# **Data Mining and Machine Learning**
-
-### Prof. Marcelloni Francesco
-### Prof. Ducange Pietro
----
-
 # **Classifier for predicting COVID-19 patients hospitalization based on medical preconditions**
 
 ### The scientific community and infection control agencies face enormous challenges in controlling the increasing intensity of the COVID-19 pandemic: the disease has spread rapidly around the world.
